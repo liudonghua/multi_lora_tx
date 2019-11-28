@@ -140,7 +140,8 @@ SX1276Radio::SX1276Radio(const boost::shared_ptr<SPI>& spi)
   continuousSetup_(false),
   high_power_mode_(false),
   preamble_(0x8),
-  symbolTimeout_(0x08)
+  symbolTimeout_(0x08),
+  sf_(0x9)
 {
   char *p = getenv("SX1276_HIGH");
   if (p && strcmp(p, "1")==0) {
@@ -253,7 +254,10 @@ bool SX1276Radio::ChangeCarrier(uint32_t carrier_hz)
   // AU ISM Band >= 915 MHz
   // Frequency latches when Lsb is written
   uint8_t v;
-  uint64_t Frf = (uint64_t)carrier_hz * (1 << 19) / 32000000ULL;
+  uint16_t Srandseed = 0;
+  srand(Srandseed);
+  uint32_t if_hz  =  200000000 * rand() / 8;
+  uint64_t Frf = (uint64_t)(carrier_hz + if_hz) * (1 << 19) / 32000000ULL;
   v = Frf >> 16;
   WriteRegisterVerify(SX1276REG_FrfMsb, v);
   v = Frf >> 8;
@@ -288,6 +292,7 @@ bool SX1276Radio::ApplyDefaultLoraConfiguration()
   fault_ = false;
 
   uint8_t v;
+  uint16_t Srandseed = 0;
   // To switch to LoRa mode if we were in OOK for some reason need to go to sleep mode first : zero 3 lower bits
   spi_->ReadRegister(SX1276REG_OpMode, v);
   WriteRegisterVerify(SX1276REG_OpMode, v & 0xf8);
@@ -329,9 +334,11 @@ bool SX1276Radio::ApplyDefaultLoraConfiguration()
   v = (SX1276_LORA_BW_125000 << 4) | ((SX1276_LORA_CODING_RATE_4_6) << 1) | 0x0;
   WriteRegisterVerify(SX1276REG_ModemConfig1, v);
 
+  srand(Srandseed);  
+	sf_=  rand() % 5 + 8 ;
   // SF9, normal (not continuous) mode, CRC, and upper 2 bits of symbol timeout (maximum i.e. 1023)
   // We use 255, or 255 x (2^9)/125000 or ~1 second
-  v = (0x9 << 4) | (0 << 3)| (1 << 2) | ((symbolTimeout_ >> 8) & 0x03);
+  v = (sf_<< 4) | (0 << 3)| (1 << 2) | ((symbolTimeout_ >> 8) & 0x03);
   WriteRegisterVerify(SX1276REG_ModemConfig2, v);
   v = symbolTimeout_ & 0xff;
   WriteRegisterVerify(SX1276REG_SymbTimeoutLsb, v);
@@ -390,16 +397,16 @@ bool SX1276Radio::ApplyDefaultLoraConfiguration()
 float SX1276Radio::PredictTimeOnAir(const char *payload) const
 {
   unsigned BW = 125000;
-  unsigned SF = 9;
-  float toa = (6.F+4.25F+8+ceil( (8*(strlen(payload)+1)-4*SF+28+16)/(4*SF))*6.F) * (1 << SF) / BW;
+  
+  float toa = (6.F+4.25F+8+ceil( (8*(strlen(payload)+1)-4*sf_+28+16)/(4*sf_))*6.F) * (1 << sf_) / BW;
   return toa;
 }
 
 float SX1276Radio::PredictTimeOnAir(const void *payload, unsigned len) const
 {
   unsigned BW = 125000;
-  unsigned SF = 9;
-  float toa = (6.F+4.25F+8+ceil( (8*(len+1)-4*SF+28+16)/(4*SF))*6.F) * (1 << SF) / BW;
+  
+  float toa = (6.F+4.25F+8+ceil( (8*(len+1)-4*sf_+28+16)/(4*sf_))*6.F) * (1 << sf_) / BW;
   return toa;
 }
 

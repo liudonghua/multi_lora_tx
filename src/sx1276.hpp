@@ -137,6 +137,7 @@ private:
   bool high_power_mode_;
   unsigned preamble_;
   unsigned symbolTimeout_;
+  uint8_t sf_;
 };
 
 #endif // SX1276_HPP__
