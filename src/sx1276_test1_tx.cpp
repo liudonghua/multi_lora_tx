@@ -60,13 +60,14 @@ int main(int argc, char* argv[])
 
   platform->ResetSX1276();
 
+  
   radio.ChangeCarrier(atoi(argv[2]));
-  radio.ApplyDefaultLoraConfiguration();
+  radio.ApplyDefaultLoraConfiguration(9);
   cout << format("Check read Carrier Frequency: %uHz\n") % radio.carrier();
 
   if (radio.fault()) return 1;
 
-  char msg[128];
+  char msg[128]="TX start now!";
   printf("Beacon message: '%s'\n", safe_str(msg).c_str());
   printf("Predicted time on air: %fs\n", radio.PredictTimeOnAir(msg));
 
@@ -83,18 +84,26 @@ int main(int argc, char* argv[])
     strftime(buft,80,"%d-%m-%Y %I:%M:%S", ti);
     snprintf(msg, sizeof(msg), "TX BEACON %6d %s\n", total, buft);
 	
-    if (radio.SendSimpleMessage(msg)) { printf("%d ", total); fflush(stdout); radio.Standby(); usleep(inter_msg_delay_us); continue; }
+    if (radio.SendSimpleMessage(msg)) { printf("%d ", total); fflush(stdout); radio.Standby(); usleep(inter_msg_delay_us); }
     radio.Standby();
     printf("\n");
     faultCount++;
-    PR_ERROR("Fault on send detected: %d of %d\n", faultCount, total);
+    //PR_ERROR("Fault on send detected: %d of %d\n", faultCount, total);
     printf("Beacon message: '%s'\n", safe_str(msg).c_str());
     printf("Predicted time on air: %fs\n", radio.PredictTimeOnAir(msg));
     radio.reset_fault();
     platform->ResetSX1276();
-    radio.ChangeCarrier(atoi(argv[2]));
-    radio.ApplyDefaultLoraConfiguration();
-    usleep(10000);
+    uint16_t Srandseed = (unsigned)time(NULL);
+    srand(Srandseed);
+    uint32_t if_hz  =  200000 * (rand() % 8);
+    uint32_t freq_hz = atoi(argv[2]) + if_hz;
+    radio.ChangeCarrier(freq_hz);
+
+    srand(Srandseed);  
+	  uint8_t sf =  rand() % 5 + 8 ;
+    radio.ApplyDefaultLoraConfiguration(sf);
+    printf("spread factor:%d frequency:%d \n",sf,freq_hz);
+    usleep(5000);
   }
   return 1;
 }

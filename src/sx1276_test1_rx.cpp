@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
   radio.SetSymbolTimeout(732);
 
   radio.ChangeCarrier(919000000);
-  radio.ApplyDefaultLoraConfiguration();
+  radio.ApplyDefaultLoraConfiguration(9);
 
   cout << format("Check read Carrier Frequency: %uHz\n") % radio.carrier();
 
@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
       PR_ERROR("Fault on receive detected: %ld of %ld\n", faultCount, total);
       platform->ResetSX1276();
       radio.ChangeCarrier(919000000);
-      radio.ApplyDefaultLoraConfiguration();
+      radio.ApplyDefaultLoraConfiguration(9);
       usleep(500000);
     } else if (timeout) { // this is a symbol timeout...
       tout1++; // dont print too often or we miss messages

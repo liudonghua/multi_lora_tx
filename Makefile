@@ -22,14 +22,14 @@ PKG_INSTALL=
 
 define Package/loratx
 	SECTION:=utils
-	CATEGORY:=Extra
+	CATEGORY:=Extra packages
 	TITLE:=loratx
 	DEPENDS:= +boost-date_time +boost-chrono +boost-system
 endef
 
 define Package/loratx/install
-	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/sx1276_test1_tx $(1)/usr/bin/loratx
+	$(INSTALL_DIR) $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/sx1276_test1_tx $(1)/usr/sbin/loratx
 endef
 
 $(eval $(call BuildPackage,loratx))

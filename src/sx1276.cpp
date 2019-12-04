@@ -254,10 +254,8 @@ bool SX1276Radio::ChangeCarrier(uint32_t carrier_hz)
   // AU ISM Band >= 915 MHz
   // Frequency latches when Lsb is written
   uint8_t v;
-  uint16_t Srandseed = 0;
-  srand(Srandseed);
-  uint32_t if_hz  =  200000000 * rand() / 8;
-  uint64_t Frf = (uint64_t)(carrier_hz + if_hz) * (1 << 19) / 32000000ULL;
+
+  uint64_t Frf = (uint64_t)carrier_hz * (1 << 19) / 32000000ULL;
   v = Frf >> 16;
   WriteRegisterVerify(SX1276REG_FrfMsb, v);
   v = Frf >> 8;
@@ -287,12 +285,12 @@ void SX1276Radio::ReadCarrier()
   actual_hz_ = actual_hz;
 }
 
-bool SX1276Radio::ApplyDefaultLoraConfiguration()
+bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf)
 {
   fault_ = false;
 
   uint8_t v;
-  uint16_t Srandseed = 0;
+  
   // To switch to LoRa mode if we were in OOK for some reason need to go to sleep mode first : zero 3 lower bits
   spi_->ReadRegister(SX1276REG_OpMode, v);
   WriteRegisterVerify(SX1276REG_OpMode, v & 0xf8);
@@ -334,8 +332,7 @@ bool SX1276Radio::ApplyDefaultLoraConfiguration()
   v = (SX1276_LORA_BW_125000 << 4) | ((SX1276_LORA_CODING_RATE_4_6) << 1) | 0x0;
   WriteRegisterVerify(SX1276REG_ModemConfig1, v);
 
-  srand(Srandseed);  
-	sf_=  rand() % 5 + 8 ;
+  sf_=sf;
   // SF9, normal (not continuous) mode, CRC, and upper 2 bits of symbol timeout (maximum i.e. 1023)
   // We use 255, or 255 x (2^9)/125000 or ~1 second
   v = (sf_<< 4) | (0 << 3)| (1 << 2) | ((symbolTimeout_ >> 8) & 0x03);
@@ -449,7 +446,7 @@ bool SX1276Radio::SendSimpleMessage(const void *payload, unsigned n)
   usleep(100);
   uint8_t fifo_pos;
   ReadRegisterHarder(SX1276REG_FifoAddrPtr, fifo_pos);
-
+ 
   for (uint8_t b=0; b < n; b++) {
     spi_->WriteRegister(SX1276REG_Fifo, ((const uint8_t*)payload)[b]); // Note: we cant verify
     usleep(100);
@@ -477,10 +474,12 @@ bool SX1276Radio::SendSimpleMessage(const void *payload, unsigned n)
   // We should calculate it; for the moment just wait 1 second
 
   steady_clock::time_point t0 = steady_clock::now();
-  steady_clock::time_point t1 = t0 + boost::chrono::milliseconds(1000); // 1 second is way overkill
+  steady_clock::time_point t1 = t0 + boost::chrono::milliseconds(2000); // 1 second is way overkill
   bool done = false;
   do {
-    if (!ReadRegisterHarder(SX1276REG_IrqFlags, v, 4)) break;
+    if (!ReadRegisterHarder(SX1276REG_IrqFlags, v,4)) 
+      break;
+    
     if (v & (1 << 3)) {
       done = true;
       break;
