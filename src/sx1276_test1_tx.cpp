@@ -99,11 +99,12 @@ int main(int argc, char* argv[])
     uint32_t freq_hz = atoi(argv[2]) + if_hz;
     radio.ChangeCarrier(freq_hz);
 
-    srand(Srandseed);  
-	  uint8_t sf =  rand() % 5 + 8 ;
+    	  uint8_t sf =  rand() % 5 + 8 ;
     radio.ApplyDefaultLoraConfiguration(sf);
     printf("spread factor:%d frequency:%d \n",sf,freq_hz);
-    usleep(5000);
+     cout << format("Check read Carrier Frequency: %uHz\n") % radio.carrier();
+    usleep(1000);
   }
   return 1;
 }
+

@@ -474,7 +474,7 @@ bool SX1276Radio::SendSimpleMessage(const void *payload, unsigned n)
   // We should calculate it; for the moment just wait 1 second
 
   steady_clock::time_point t0 = steady_clock::now();
-  steady_clock::time_point t1 = t0 + boost::chrono::milliseconds(2000); // 1 second is way overkill
+  steady_clock::time_point t1 = t0 + boost::chrono::milliseconds(3000); // 1 second is way overkill
   bool done = false;
   do {
     if (!ReadRegisterHarder(SX1276REG_IrqFlags, v,4)) 
@@ -702,3 +702,4 @@ bool SX1276Radio::ReceiveSimpleMessage(uint8_t buffer[], int& size, int timeout_
 
   // Caller should return to standby if going back to sleep
 }
+
