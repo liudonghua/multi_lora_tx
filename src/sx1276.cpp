@@ -291,6 +291,7 @@ bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf)
 
   uint8_t v;
   
+  uint8_t txpow;
   // To switch to LoRa mode if we were in OOK for some reason need to go to sleep mode first : zero 3 lower bits
   spi_->ReadRegister(SX1276REG_OpMode, v);
   WriteRegisterVerify(SX1276REG_OpMode, v & 0xf8);
@@ -304,9 +305,14 @@ bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf)
 
   ReadCarrier();
 
-  // Switch to maximum current mode (0x1B == 240mA), and enable overcurrent protection
-  WriteRegisterVerify(SX1276REG_Ocp, (1<<5) | 0x0B); // 0b is default, 1b max, CAUSING ISSUES
+  txpow = atoi(getenv("TX_POWER"));
 
+  if(!txpow || txpow > 0x1b)
+    txpow = 0x0b;
+
+  // Switch to maximum current mode (0x1B == 240mA), and enable overcurrent protection
+  //WriteRegisterVerify(SX1276REG_Ocp, (1<<5) | 0x0B); // 0b is default, 1b max, CAUSING ISSUES
+  WriteRegisterVerify(SX1276REG_Ocp,  txpow); // 0b is default, 1b max, CAUSING ISSUES
   // Re-read operating mode and check we set it as expected
   spi_->ReadRegister(SX1276REG_OpMode, v);
   if (fault_ || v != 0x81) {
@@ -426,9 +432,9 @@ bool SX1276Radio::SendSimpleMessage(const void *payload, unsigned n)
   continuousSetup_ = false;
 
   DEBUG("[SX1276][TX] %u\n", n);
-  fflush(stdout);
-  FILE* f = popen("od -Ax -tx1z -v -w16", "w");
-  if (f) { fwrite(payload, n, 1, f); pclose(f); }
+  //fflush(stdout);
+  //FILE* f = popen("od -Ax -tx1z -v -w16", "w");
+  //if (f) { fwrite(payload, n, 1, f); pclose(f); }
 
   // LoRa Standby
   Standby();

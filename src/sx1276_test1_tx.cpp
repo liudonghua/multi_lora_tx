@@ -35,11 +35,75 @@ inline std::string safe_str(const char *m)
   return result;
 }
 
+void usage(void) {
+  printf("-d          spi device path for node(/dev/spidev0.0)\n");
+  printf("-f          LoRa Frequency(430000000-928000000\n");
+  printf("-s          LoRa spread factor(7~12)\n");
+  printf("-t          interval time between two transmit\n");
+}
+
 int main(int argc, char* argv[])
 {
-  if (argc < 3) { fprintf(stderr, "Usage: %s <spidev> <frequency>", argv[0]); return 1; }
+  //if (argc < 3) { fprintf(stderr, "Usage: %s <spidev> <frequency>", argv[0]); return 1; }
+  /* parse command line options */
 
-  shared_ptr<SX1276Platform> platform = SX1276Platform::GetInstance(argv[1]);
+    int i;
+    int xd=0;
+    uint32_t xl=0;
+    uint32_t freq = 0;
+    uint32_t freq_hz;
+    uint32_t if_hz;
+    int sf = 0;
+    int sff = 0;
+    int timeout = 0;
+    char device[10];
+    int sfs[25] = {7,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,9,9,9,9,10,10,11,12};
+     while ((i = getopt (argc, argv, "hf:d:s:t:")) != -1){
+      switch(i){
+            case 'h':
+                usage();
+                return EXIT_FAILURE;
+                break;
+
+            case 'f': /* <float> Target frequency in MHz */
+                i = sscanf(optarg, "%li", &xl);
+                if ((i != 1) || (xl < 430000000) || (xl > 928000000)) {
+                    printf("ERROR: invalid TX frequency\n");
+                    usage();
+                    return EXIT_FAILURE;
+                } else {
+                    freq = xl; 
+                }
+                break;
+
+             case 'd': 
+                i = sscanf(optarg, "%s", device);
+                if (i != 1) {
+                    printf("ERROR: invalid spi device\n");
+                    usage();
+                    return EXIT_FAILURE;
+                } 
+                break;
+
+            case 's': 
+                i = sscanf(optarg, "%d", &sf);
+                if ((i != 1) || (sf < 7) || (sf > 12))
+                  sf = 0;
+                break;
+            
+            case 't':
+                i = sscanf(optarg, "%d", &timeout);
+                if (i!=1)
+                  timeout = 0;
+                break;
+
+            default:
+                printf("ERROR: argument parsing\n");
+                usage();
+                return EXIT_FAILURE;
+        }
+    }                
+  shared_ptr<SX1276Platform> platform = SX1276Platform::GetInstance(device);
   if (!platform) { PR_ERROR("Unable to create platform instance. Note, use /dev/tty... for BusPirate, otherwise, /dev/spidevX.Y\n"); return 1; }
 
   shared_ptr<SPI> spi = platform->GetSPI();
@@ -61,7 +125,7 @@ int main(int argc, char* argv[])
   platform->ResetSX1276();
 
   
-  radio.ChangeCarrier(atoi(argv[2]));
+  radio.ChangeCarrier(freq);
   radio.ApplyDefaultLoraConfiguration(9);
   cout << format("Check read Carrier Frequency: %uHz\n") % radio.carrier();
 
@@ -84,7 +148,7 @@ int main(int argc, char* argv[])
     strftime(buft,80,"%d-%m-%Y %I:%M:%S", ti);
     snprintf(msg, sizeof(msg), "TX BEACON %6d %s\n", total, buft);
 	
-    if (radio.SendSimpleMessage(msg)) { printf("%d ", total); fflush(stdout); radio.Standby(); usleep(inter_msg_delay_us); }
+    if (radio.SendSimpleMessage(msg)) { printf("%d ", total); fflush(stdout); radio.Standby(); usleep(timeout); }
     radio.Standby();
     printf("\n");
     faultCount++;
@@ -93,17 +157,24 @@ int main(int argc, char* argv[])
     printf("Predicted time on air: %fs\n", radio.PredictTimeOnAir(msg));
     radio.reset_fault();
     platform->ResetSX1276();
-    uint16_t Srandseed = (unsigned)time(NULL);
-    srand(Srandseed);
-    uint32_t if_hz  =  200000 * (rand() % 8);
-    uint32_t freq_hz = atoi(argv[2]) + if_hz;
+    
+    srand((uint16_t)time(NULL));
+    if_hz  =  200000 * (rand() % 8);
+    freq_hz = freq + if_hz;
     radio.ChangeCarrier(freq_hz);
 
-    	  uint8_t sf =  rand() % 5 + 8 ;
-    radio.ApplyDefaultLoraConfiguration(sf);
-    printf("spread factor:%d frequency:%d \n",sf,freq_hz);
+    printf("spread factor origin:%d \n",sf);
+    if(sf == 0){
+	    srand((uint16_t)time(NULL));
+	    sff =  sfs[rand() % 25];
+    }else{
+	    sff = sf;
+    }
+    	
+    radio.ApplyDefaultLoraConfiguration(sff);
+    printf("spread factor:%d frequency:%d \n",sff,freq_hz);
      cout << format("Check read Carrier Frequency: %uHz\n") % radio.carrier();
-    usleep(1000);
+    usleep(timeout);
   }
   return 1;
 }
