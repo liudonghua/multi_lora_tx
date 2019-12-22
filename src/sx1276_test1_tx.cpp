@@ -18,11 +18,18 @@
 */
 #include "sx1276.hpp"
 #include "sx1276_platform.hpp"
+#include "LoRaMacCrypto.h"
 #include "misc.hpp"
 #include <boost/shared_ptr.hpp>
 #include <boost/format.hpp>
 #include <iostream>
-#include <stdlib.h>  
+#include <stdlib.h> 
+
+#include <cstring>
+
+#define     PREME   0x40
+#define     FCNTL   0x00
+#define     FPORT   0x02
 
 using boost::shared_ptr;
 using boost::format;
@@ -40,6 +47,7 @@ void usage(void) {
   printf("-f          LoRa Frequency(430000000-928000000\n");
   printf("-s          LoRa spread factor(7~12)\n");
   printf("-t          interval time between two transmit\n");
+  printf("-z          payload size\n");
 }
 
 int main(int argc, char* argv[])
@@ -55,10 +63,12 @@ int main(int argc, char* argv[])
     uint32_t if_hz;
     int sf = 0;
     int sff = 0;
+    uint8_t plen = 10;
     int timeout = 0;
+    int16_t maxaddr = 100;
     char device[10];
     int sfs[25] = {7,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,9,9,9,9,10,10,11,12};
-     while ((i = getopt (argc, argv, "hf:d:s:t:")) != -1){
+     while ((i = getopt (argc, argv, "hf:d:s:t:z:")) != -1){
       switch(i){
             case 'h':
                 usage();
@@ -97,6 +107,18 @@ int main(int argc, char* argv[])
                   timeout = 0;
                 break;
 
+            case 'z':
+                i = sscanf(optarg, "%d", &plen);
+                if (i!=1)
+                  plen = 10;
+                break;
+
+            case 'x':
+                i = sscanf(optarg,"%d",&maxaddr);
+                if (i!=1)
+                  maxaddr = 100;
+                break;
+
             default:
                 printf("ERROR: argument parsing\n");
                 usage();
@@ -131,24 +153,56 @@ int main(int argc, char* argv[])
 
   if (radio.fault()) return 1;
 
-  char msg[128]="TX start now!";
+  char msg[240]="";
   printf("Beacon message: '%s'\n", safe_str(msg).c_str());
   printf("Predicted time on air: %fs\n", radio.PredictTimeOnAir(msg));
 
-  int total = 0;
+  uint32_t total = 1;
+  uint32_t devaddr = 0 ;
   int faultCount = 0;
   while (true) {
-    total++;
+    devaddr++;
+    if (devaddr > maxaddr){
+      total++;
+      devaddr = 0;
 
+    }
+    
     time_t rawt;
     struct tm *ti;
-    char buft[80];
-    time(&rawt);
-    ti = localtime(&rawt);
-    strftime(buft,80,"%d-%m-%Y %I:%M:%S", ti);
-    snprintf(msg, sizeof(msg), "TX BEACON %6d %s\n", total, buft);
-	
-    if (radio.SendSimpleMessage(msg)) { printf("%d ", total); fflush(stdout); radio.Standby(); usleep(timeout); }
+    char enbuffer[255];
+
+    uint8_t preme = PREME;
+
+    uint8_t fcntl = FCNTL;
+
+    uint8_t fport = FPORT;
+
+    snprintf(msg, plen, "1abcdefghijklmnopqrstuvwxyzABCDEFGIJKLMNOPQRSTUVWXYZabcdefgijklmnopqrstuvwxyz01234567890abcdefghijklmnopqrstuvwxyzABCDEFGIJKLMNOPQRSTUVWXYZabcdefgijklmnopqrstuvwxyzbcdefghijklmnopqrstuvwxyzABCDEFGIJKLMNOPQRSTUVWXYZabcdefgijklmnopqrstuvwxyz");
+    
+    memcpy((uint8_t *)enbuffer,(uint8_t *)&preme,1);
+    //baddr = (((devaddr>>24) & 0x000000ff) | ((devaddr>>8) & 0x0000ff00) | ((devaddr<<8) & 0x00ff0000) | ((devaddr<<24) & 0xff000000));
+
+    memcpy((uint32_t *)(enbuffer+1),(uint32_t *)&devaddr,4);
+
+    memcpy((uint8_t *)(enbuffer+5),(uint8_t *)&fcntl,1);
+
+    //uint16_t count = (cycle_count<<8 & 0xff00)|(cycle_count>>8 & 0x00ff);
+    memcpy((uint16_t *)(enbuffer+6),(uint16_t *)&total,2);
+
+    memcpy((uint8_t *)(enbuffer+8),(uint8_t *)&fport,1);
+
+    memcpy((uint8_t *)(enbuffer+9),msg,plen);
+
+    uint32_t mic  = 0;
+
+    const uint8_t appskey[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+    LoRaMacComputeMic((uint8_t *)enbuffer,uint16_t(plen+9),appskey,devaddr,0,total,&mic);
+
+    memcpy((uint32_t *)(enbuffer+plen+9),&mic,4);
+    
+    if (radio.SendSimpleMessage(enbuffer,plen+13)) { printf("%d ", total); fflush(stdout); radio.Standby(); usleep(timeout); }
     radio.Standby();
     printf("\n");
     faultCount++;

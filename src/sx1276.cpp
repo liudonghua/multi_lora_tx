@@ -427,7 +427,7 @@ bool SX1276Radio::SendSimpleMessage(const char *payload)
 bool SX1276Radio::SendSimpleMessage(const void *payload, unsigned n)
 {
   uint8_t v;
-  if (n > 127) { fprintf(stderr, "Message too long; truncated!\n"); }
+  //sif (n > 127) { fprintf(stderr, "Message too long; truncated!\n"); }
 
   continuousSetup_ = false;
 
