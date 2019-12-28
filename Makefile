@@ -24,12 +24,12 @@ define Package/loratx
 	SECTION:=utils
 	CATEGORY:=Extra packages
 	TITLE:=loratx
-	DEPENDS:= +boost +boost-date_time +boost-chrono +boost-system
+	DEPENDS:= +boost +boost-date_time +boost-chrono +boost-system +jsoncpp +libpthread
 endef
 
 define Package/loratx/install
 	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/sx1276_test1_tx $(1)/usr/sbin/loratx
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/loratx $(1)/usr/sbin
 endef
 
 $(eval $(call BuildPackage,loratx))

@@ -78,15 +78,15 @@ endif()
 
 
 # FIXME This should probably be a lib, sort it out later
-set(MY_FILES buspirate_binary.c buspirate_spi.cpp utilities.c aes.c cmac.c LoRaMacCrypto.c sx1276_platform.cpp misc.cpp spidev_spi.cpp sx1276.cpp spi.hpp util.hpp)
-set(MY_LIBS ${CMAKE_THREAD_LIBS_INIT} ${Boost_SYSTEM_LIBRARY} ${Boost_CHRONO_LIBRARY} ${Boost_DATE_TIME_LIBRARY} ${UGPIO_LIBRARY})
+set(MY_FILES buspirate_binary.c buspirate_spi.cpp utilities.c aes.c cmac.c LoRaMacCrypto.c sx1276_platform.cpp misc.cpp spidev_spi.cpp sx1276.cpp sx1276_tx.cpp sx1276_tx.hpp spi.hpp util.hpp)
+set(MY_LIBS ${CMAKE_THREAD_LIBS_INIT} ${Boost_SYSTEM_LIBRARY} ${Boost_CHRONO_LIBRARY} ${Boost_DATE_TIME_LIBRARY} ${UGPIO_LIBRARY} jsoncpp pthread)
 
 #add_executable(bp_sx1276_dump bp_sx1276_dump.c buspirate_binary.c )
-add_executable(sx1276_dump_regs sx1276_dump_regs.cpp ${MY_FILES})
-add_executable(sx1276_test1_tx sx1276_test1_tx.cpp ${MY_FILES})
-add_executable(sx1276_test1_rx sx1276_test1_rx.cpp ${MY_FILES})
+#add_executable(sx1276_dump_regs sx1276_dump_regs.cpp ${MY_FILES})
+#add_executable(sx1276_test1_tx sx1276_test1_tx.cpp ${MY_FILES})
+add_executable(loratx main.cpp ${MY_FILES})
 
-target_link_libraries(sx1276_test1_tx ${MY_LIBS})
-target_link_libraries(sx1276_test1_rx ${MY_LIBS})
-target_link_libraries(sx1276_dump_regs ${MY_LIBS})
+target_link_libraries(loratx ${MY_LIBS})
+#target_link_libraries(sx1276_test1_rx ${MY_LIBS})
+#target_link_libraries(sx1276_dump_regs ${MY_LIBS})
 
