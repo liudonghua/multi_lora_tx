@@ -10,16 +10,23 @@
 class SX1276Tx
 {
 public:
-	char device[10];
-	uint64_t *freqs;
-	uint8_t freq_size;
-	uint8_t *sfs;
-	uint8_t sf_size;
-	uint16_t timeout;
-	uint8_t plen;
-	uint16_t maxaddr;
-	uint32_t max_count;
-    void threadtx();
+	char		device[15];
+	uint32_t	*freqs;
+	uint8_t		freq_size;
+	uint8_t		*sfs;
+	uint8_t		sf_size;
+	uint8_t		txpow;
+	uint16_t	timeout;
+	uint8_t		plen;
+	uint16_t	maxaddr;
+	uint32_t	max_count;
+	std::thread thd(){
+		return std::thread(&SX1276Tx::threadtx,this);
+	}
+private:
+
+
+	void threadtx();
 };
 
 #endif

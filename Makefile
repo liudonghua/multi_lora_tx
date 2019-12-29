@@ -20,6 +20,8 @@ include $(INCLUDE_DIR)/cmake.mk
 
 PKG_INSTALL=
 
+TARGET_CXXFLAGS+= -O2
+
 define Package/loratx
 	SECTION:=utils
 	CATEGORY:=Extra packages
@@ -30,6 +32,9 @@ endef
 define Package/loratx/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/loratx $(1)/usr/sbin
+	$(INSTALL_DIR) $(1)/etc
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/loratx.sh $(1)/etc
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/conf.json $(1)/etc
 endef
 
 $(eval $(call BuildPackage,loratx))

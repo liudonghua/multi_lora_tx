@@ -31,6 +31,8 @@ using boost::chrono::steady_clock;
 // IMPORTANT: but, receiving is just not up to the job...
 
 // The following register naming convention follows SX1276 Datasheet chapter 6
+
+
 #define SX1276REG_Fifo              0x00
 #define SX1276REG_OpMode            0x01
 #define SX1276REG_FrfMsb            0x06
@@ -88,6 +90,8 @@ using boost::chrono::steady_clock;
 #define BW_TO_SWITCH(number) case number : return PASTE(SX1276_LORA_BW_, number)
 #define BW_FR_SWITCH(number) case PASTE(SX1276_LORA_BW_, number) : return number;
 
+#define SX1276_HIGH "1"
+
 #if 1
 #define DEBUG(x ...) printf(x)
 #else
@@ -143,7 +147,7 @@ SX1276Radio::SX1276Radio(const boost::shared_ptr<SPI>& spi)
   symbolTimeout_(0x08),
   sf_(0x9)
 {
-  char *p = getenv("SX1276_HIGH");
+  const char *p = SX1276_HIGH;
   if (p && strcmp(p, "1")==0) {
     high_power_mode_ = true;
   }
@@ -285,14 +289,13 @@ void SX1276Radio::ReadCarrier()
   actual_hz_ = actual_hz;
 }
 
-bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf)
+bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf,uint8_t txpow)
 {
   fault_ = false;
 
   uint8_t v;
   
-  uint8_t txpow;
-  // To switch to LoRa mode if we were in OOK for some reason need to go to sleep mode first : zero 3 lower bits
+   // To switch to LoRa mode if we were in OOK for some reason need to go to sleep mode first : zero 3 lower bits
   spi_->ReadRegister(SX1276REG_OpMode, v);
   WriteRegisterVerify(SX1276REG_OpMode, v & 0xf8);
 
@@ -304,8 +307,6 @@ bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf)
   Standby();
 
   ReadCarrier();
-
-  txpow = atoi(getenv("TX_POWER"));
 
   if(!txpow || txpow > 0x1b)
     txpow = 0x0b;

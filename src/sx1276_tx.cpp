@@ -38,6 +38,11 @@ using boost::shared_ptr;
 using boost::format;
 using std::cout;
 
+#if 1
+#define   DBG 	printf
+#else
+#define DBG
+#endif
 
 
 inline std::string safe_str(const char *m)
@@ -46,9 +51,6 @@ inline std::string safe_str(const char *m)
 	for (; *m; ) { char c = *m++; result += iscntrl(c) ? '.' : c; }
 	return result;
 }
-
-
-
 
 void SX1276Tx::threadtx()
 {
@@ -63,13 +65,14 @@ void SX1276Tx::threadtx()
 
 	shared_ptr<SX1276Platform> platform = SX1276Platform::GetInstance(device);
 	if (!platform) { PR_ERROR("Unable to create platform instance. Note, use /dev/tty... for BusPirate, otherwise, /dev/spidevX.Y\n"); return; }
-
 	shared_ptr<SPI> spi = platform->GetSPI();
-	if (!spi) { PR_ERROR("Unable to get SPI instance\n"); return; }
 
-	// Pass a small value in for RTL-SDK spectrum analyser to show up
+	if (!spi) { PR_ERROR("Unable to get SPI instance\n"); return; }
 	unsigned inter_msg_delay_us = 20000;
-	if (getenv("BEACON_INTERVAL")) { inter_msg_delay_us = atoi(getenv("BEACON_INTERVAL")); }
+
+	//if (getenv("BEACON_INTERVAL")) { inter_msg_delay_us = atoi(getenv("BEACON_INTERVAL")); }
+	// Pass a small value in for RTL-SDK spectrum analyser to show up
+	if(timeout) inter_msg_delay_us = 1000*timeout;
 
 	Misc::UserTraceSettings(spi);
 
@@ -84,7 +87,7 @@ void SX1276Tx::threadtx()
 
 	
 	radio.ChangeCarrier(freqs[0]);
-	radio.ApplyDefaultLoraConfiguration(sf);
+	radio.ApplyDefaultLoraConfiguration(sf,txpow);
 	cout << format("Check read Carrier Frequency: %uHz\n") % radio.carrier();
 
 	if (radio.fault()) return;
@@ -93,8 +96,8 @@ void SX1276Tx::threadtx()
 	printf("Beacon message: '%s'\n", safe_str(msg).c_str());
 	printf("Predicted time on air: %fs\n", radio.PredictTimeOnAir(msg));
 
-	uint32_t total = 1;
-	uint16_t devaddr = 0 ;
+	uint16_t total = 1;
+	uint32_t devaddr = 0 ;
 	int faultCount = 0;
 	while (true) {
 		devaddr++;
@@ -138,7 +141,7 @@ void SX1276Tx::threadtx()
 
 		memcpy((uint32_t *)(enbuffer+plen+9),&mic,4);
 		
-		if (radio.SendSimpleMessage(enbuffer,plen+13)) { printf("%d ", total); fflush(stdout); radio.Standby(); usleep(timeout); }
+		if (radio.SendSimpleMessage(enbuffer,plen+13)) { printf("%d ", total); fflush(stdout); radio.Standby(); usleep(inter_msg_delay_us); }
 		radio.Standby();
 		printf("\n");
 		faultCount++;
@@ -166,10 +169,9 @@ void SX1276Tx::threadtx()
 		
 		printf("spread factor origin:%d \n",sf);
 
-		radio.ApplyDefaultLoraConfiguration(sf);
+		radio.ApplyDefaultLoraConfiguration(sf,txpow);
 		printf("spread factor:%d frequency:%d \n",sf,freq_hz);
 		cout << format("Check read Carrier Frequency: %uHz\n") % radio.carrier();
-		usleep(timeout);
+		usleep(inter_msg_delay_us);
 	}
 }
-
