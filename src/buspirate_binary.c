@@ -192,13 +192,13 @@ bool bp_spi_config(int fd)
   // SPI speed = 30 kHz
   // 000=30kHz, 001=125kHz, 010=250kHz, 011=1MHz, 100=2MHz, 101=2.6MHz, 110=4MHz, 111=8MHz
   // struggles to dump at 1M
-  ok=bp_bitbang_cmd(fd, 0x62);             // 0x60 == 0x60 | (30k = 000)
+  ok=bp_bitbang_cmd(fd, 0x67);             // 0x60 == 0x60 | (30k = 000)
   if (!ok) { perror("Unable to issue SPI SPEED"); return false; }
 
   // Enable CS
   // 0000001x - CS high (1) or low (0)
   //ok = bp_bitbang_cmd(fd, 0x2);           // 0x3 == 0x2 | (ChipSelect)
-  // if (!ok) { perror("Unable to activate /CS"); return; }
+  //if (!ok) { perror("Unable to activate /CS"); return; }
 
   return true;
 }

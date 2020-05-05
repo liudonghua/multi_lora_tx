@@ -58,7 +58,7 @@ class Carambola2Platform : public SX1276Platform
 {
 public:
   Carambola2Platform(const char *device)
-  : device_(device), rst_gpio_(18), rst_gp_(NULL)
+  : device_(device), rst_gpio_(17), rst_gp_(NULL)
   {
     printf("Platform:Linux spidev\n");
     spi_.reset(new SpidevSPI);

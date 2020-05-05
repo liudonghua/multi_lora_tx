@@ -31,6 +31,8 @@ using boost::chrono::steady_clock;
 // IMPORTANT: but, receiving is just not up to the job...
 
 // The following register naming convention follows SX1276 Datasheet chapter 6
+
+
 #define SX1276REG_Fifo              0x00
 #define SX1276REG_OpMode            0x01
 #define SX1276REG_FrfMsb            0x06
@@ -138,16 +140,11 @@ SX1276Radio::SX1276Radio(const boost::shared_ptr<SPI>& spi)
   actual_hz_(0),
   continuousMode_(false),
   continuousSetup_(false),
-  high_power_mode_(false),
+  high_power_mode_(true),
   preamble_(0x8),
   symbolTimeout_(0x08),
   sf_(0x9)
 {
-  char *p = getenv("SX1276_HIGH");
-  if (p && strcmp(p, "1")==0) {
-    high_power_mode_ = true;
-  }
-
   fault_ = !spi_->ReadRegister(0x42, version_);
   ReadCarrier();
 }
@@ -285,14 +282,13 @@ void SX1276Radio::ReadCarrier()
   actual_hz_ = actual_hz;
 }
 
-bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf)
+bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf,uint8_t txpow)
 {
   fault_ = false;
 
   uint8_t v;
   
-  uint8_t txpow;
-  // To switch to LoRa mode if we were in OOK for some reason need to go to sleep mode first : zero 3 lower bits
+   // To switch to LoRa mode if we were in OOK for some reason need to go to sleep mode first : zero 3 lower bits
   spi_->ReadRegister(SX1276REG_OpMode, v);
   WriteRegisterVerify(SX1276REG_OpMode, v & 0xf8);
 
@@ -305,14 +301,12 @@ bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf)
 
   ReadCarrier();
 
-  txpow = atoi(getenv("TX_POWER"));
-
   if(!txpow || txpow > 0x1b)
     txpow = 0x0b;
 
   // Switch to maximum current mode (0x1B == 240mA), and enable overcurrent protection
   //WriteRegisterVerify(SX1276REG_Ocp, (1<<5) | 0x0B); // 0b is default, 1b max, CAUSING ISSUES
-  WriteRegisterVerify(SX1276REG_Ocp,  txpow); // 0b is default, 1b max, CAUSING ISSUES
+  WriteRegisterVerify(SX1276REG_Ocp, (1<<5) |  txpow); // 0b is default, 1b max, CAUSING ISSUES 1 << 5 over current protection
   // Re-read operating mode and check we set it as expected
   spi_->ReadRegister(SX1276REG_OpMode, v);
   if (fault_ || v != 0x81) {

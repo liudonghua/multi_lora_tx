@@ -71,7 +71,7 @@ public:
   /// Reset the module to our specific configuration.
   /// This should always be called immediately after performing a hardware reset
   /// @return true if OK, false if unable to switch into LoRa mode, or if a fault() happened.
-  bool ApplyDefaultLoraConfiguration(uint8_t sf);
+  bool ApplyDefaultLoraConfiguration(uint8_t sf,uint8_t txpow);
 
   /// Change the carrier frequency.
   /// Note that the actual frequency is subject to rounding resolution, so call carrier() to check
