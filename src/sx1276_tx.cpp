@@ -21,14 +21,15 @@
 #include <boost/format.hpp>
 #include <iostream>
 #include <stdlib.h> 
-#include <json/json.h>
-#include <cstring>
 
+#include <cstring>
+#include "utilities.h"
 #include "sx1276.hpp"
 #include "sx1276_platform.hpp"
 #include "LoRaMacCrypto.h"
 #include "misc.hpp"
 #include "sx1276_tx.hpp"
+
 
 #define     PREME   0x40
 #define     FCNTL   0x00
@@ -44,25 +45,16 @@ using std::cout;
 #define   DBG 	printf
 #else
 #define DBG
-#endif
+#endif 
 
 SX1276Tx::SX1276Tx(Json::Value conf)
-:device("/dev/spidev0.0"),
-freq_size(0),
-sf_size(0),
-txpow(18),
-timeout(20),
-plen(20),
-maxaddr(1000),
-max_count(100)
 {
 	strcpy(device,conf["device"].asString().c_str());
 	if(conf["freqs"].isArray()){
-		Json::Value freqarr = conf["freqs"];
-		int freq_size 		= freqarr.size();
+		freq_size 		= conf["freqs"].size();
 		freqs=(uint32_t *)malloc(freq_size*sizeof(uint32_t));
 		for (int j=0;j<freq_size;j++)
-			freqs[j] = freqarr[j].asInt();
+			freqs[j] = conf["freqs"][j].asInt();
 	}else{
 		printf("NO FREQUENCY\n");
 		exit(-1);
@@ -75,20 +67,19 @@ max_count(100)
 	timeout		= conf["timeout"].asInt();
 
 	if(conf["sfs"].isArray()){
-		Json::Value sfarr = conf["sfs"];
-		int sf_size = sfarr.size();
+		sf_size = conf["sfs"].size();
 		sfs=(uint8_t *)malloc(sf_size*sizeof(uint8_t));
 		for (int k=0;k<sf_size;k++)
-			sfs[k]	= sfarr[k].asInt();
+			sfs[k]	= conf["sfs"][k].asInt();
 	}else{
 		printf("NO SPREAD FACTOR\n");
 		exit(-1);
 	}
+	
 }
 
 SX1276Tx::~SX1276Tx(){
-	free(sfs);
-	free(freqs);
+
 }
 
 inline std::string safe_str(const char *m)
@@ -100,13 +91,11 @@ inline std::string safe_str(const char *m)
 
 void SX1276Tx::threadtx()
 {
-
-
 	int i;
 	int sf;
 	uint32_t xl=0;
 	uint32_t freq_hz;
-
+	bool xd ,faut = false;
 
 	shared_ptr<SX1276Platform> platform = SX1276Platform::GetInstance(device);
 	if (!platform) { PR_ERROR("Unable to create platform instance. Note, use /dev/tty... for BusPirate, otherwise, /dev/spidevX.Y\n"); return; }
@@ -125,13 +114,13 @@ void SX1276Tx::threadtx()
 
 	// TODO work out how to run without powering off / resetting the module
 
-	usleep(100);
+	threadsleep(100);
 	SX1276Radio radio(spi);
 
 	cout << format("SX1276 Version: %.2x\n") % radio.version();
-
+	
 	platform->ResetSX1276();
-
+	
 	
 	// radio.ChangeCarrier(freqs[0]);
 	// radio.ApplyDefaultLoraConfiguration(sf,txpow);
@@ -207,27 +196,36 @@ void SX1276Tx::threadtx()
 			sf = sfs[0];
 		
 		printf("spread factor origin:%d \n",sf);
+		threadsleep(inter_msg_delay_us);
+		
 		radio.ChangeCarrier(freq_hz);
 		radio.ApplyDefaultLoraConfiguration(sf,txpow);
 		printf("spread factor:%d frequency:%d \n",sf,freq_hz);
-		cout << format("Check read Carrier Frequency: %uHz\n") % radio.carrier();
-
-		if (!radio.fault()  && radio.SendSimpleMessage(enbuffer,plen+13)) { 
+		//cout << format("Check read Carrier Frequency: %uHz\n") % radio.carrier();
+		faut = radio.fault();
+		xd = radio.SendSimpleMessage(enbuffer,plen+13);
+		
+		if (!faut && xd) { 
 		 	fflush(stdout); 
 			radio.Standby(); 
-			usleep(inter_msg_delay_us); 
+			printf("send success\n");
 			continue;
 		}
 		radio.Standby();
-		printf("\n");
+		
 		faultCount++;
 		PR_ERROR("Fault on send detected: %d of %d\n", faultCount, total);
 		printf("Beacon message: '%s'\n", safe_str(msg).c_str());
 		printf("Predicted time on air: %fs\n", radio.PredictTimeOnAir(msg));
+		
 		radio.reset_fault();
 		platform->ResetSX1276();
 		
 
-		usleep(inter_msg_delay_us);
+		
 	}
 }
+
+// std::thread SX1276Tx::thdTx(){
+// 	return std::thread(&SX1276Tx::threadtx,this);
+// }

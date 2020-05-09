@@ -20,6 +20,7 @@
 #include "sx1276_platform.hpp"
 #include "misc.hpp"
 #include "util.hpp"
+#include "utilities.h"
 #include <boost/shared_ptr.hpp>
 #include <boost/format.hpp>
 #include <iostream>
@@ -41,7 +42,7 @@ int main(int argc, char* argv[])
 
   Misc::UserTraceSettings(spi);
 
-  usleep(100);
+  threadsleep(100);
 
 	const unsigned LAST_REG = 0x70;
 	uint8_t values[LAST_REG+1];

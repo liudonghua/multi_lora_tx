@@ -78,7 +78,7 @@ endif()
 
 
 # FIXME This should probably be a lib, sort it out later
-set(MY_FILES buspirate_binary.c buspirate_spi.cpp utilities.c aes.c cmac.c LoRaMacCrypto.c sx1276_platform.cpp misc.cpp spidev_spi.cpp sx1276.cpp sx1276_tx.cpp sx1276_tx.hpp spi.hpp util.hpp)
+set(MY_FILES  sx1276_tx.cpp sx1276.cpp  sx1276_platform.cpp buspirate_binary.c buspirate_spi.cpp  spidev_spi.cpp  aes.c cmac.c LoRaMacCrypto.c misc.cpp  utilities.c util.hpp)
 set(MY_LIBS ${CMAKE_THREAD_LIBS_INIT} ${Boost_SYSTEM_LIBRARY} ${Boost_CHRONO_LIBRARY} ${Boost_DATE_TIME_LIBRARY} ${UGPIO_LIBRARY} jsoncpp pthread)
 
 #add_executable(bp_sx1276_dump bp_sx1276_dump.c buspirate_binary.c )

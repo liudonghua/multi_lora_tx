@@ -16,9 +16,11 @@
   You should have received a copy of the GNU General Public License
   along with SentriFarm Radio Relay.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "sx1276.hpp"
+#include "utilities.h"
 #include "spi.hpp"
 #include "misc.hpp"
+#include "sx1276.hpp"
+
 #include <string.h>
 
 #include <boost/chrono/time_point.hpp>
@@ -176,7 +178,7 @@ bool SX1276Radio::WriteRegisterVerify(uint8_t reg, uint8_t value, unsigned intra
     uint8_t check = ~value;
     ok = spi_->WriteRegister(reg, value);
     if (ok) {
-      usleep(intra_delay);
+      threadsleep(intra_delay);
       ok = spi_->ReadRegister(reg, check);
     }
     if (ok && check == value) { return true; }
@@ -201,7 +203,7 @@ bool SX1276Radio::WriteRegisterVerifyMask(uint8_t reg, uint8_t value, uint8_t ma
     uint8_t check = ~value;
     ok = spi_->WriteRegister(reg, value);
     if (ok) {
-      usleep(intra_delay);
+      threadsleep(intra_delay);
       ok = spi_->ReadRegister(reg, check);
     }
     if (ok && check == value) { return true; }
@@ -215,14 +217,14 @@ void SX1276Radio::EnterStandby()
 {
   WriteRegisterVerify(SX1276REG_OpMode, 0x81);
   continuousSetup_ = false;
-  usleep(10000);
+  threadsleep(10000);
 }
 
 void SX1276Radio::EnterSleep()
 {
   WriteRegisterVerify(SX1276REG_OpMode, 0x80);
   continuousSetup_ = false;
-  usleep(10000);
+  threadsleep(10000);
 }
 
 bool SX1276Radio::Standby(uint8_t& old_mode)
@@ -293,7 +295,7 @@ bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf,uint8_t txpow)
   WriteRegisterVerify(SX1276REG_OpMode, v & 0xf8);
 
   // usleep seems to be emprically needed for bus pirate. TBD for spidev...
-  usleep(10000);
+  threadsleep(10000);
 
   // Switch to LoRa mode in sleep mode, then turn on standby mode
   Sleep();
@@ -443,13 +445,13 @@ bool SX1276Radio::SendSimpleMessage(const void *payload, unsigned n)
   WriteRegisterVerify(SX1276REG_MaxPayloadLength, max_tx_payload_bytes_);
   WriteRegisterVerify(SX1276REG_PayloadLength, n);
 
-  usleep(100);
+  threadsleep(100);
   uint8_t fifo_pos;
   ReadRegisterHarder(SX1276REG_FifoAddrPtr, fifo_pos);
  
   for (uint8_t b=0; b < n; b++) {
     spi_->WriteRegister(SX1276REG_Fifo, ((const uint8_t*)payload)[b]); // Note: we cant verify
-    usleep(100);
+    threadsleep(100);
     ReadRegisterHarder(SX1276REG_FifoAddrPtr, v);
     if (v - fifo_pos - 1 != b) {
       fault_ = true;
@@ -484,7 +486,7 @@ bool SX1276Radio::SendSimpleMessage(const void *payload, unsigned n)
       done = true;
       break;
     } else {
-      usleep(1000);
+      threadsleep(1000);
     }
   } while (steady_clock::now() < t1);
   if (done) {
@@ -509,7 +511,7 @@ bool SX1276Radio::ReceiveSimpleMessage(uint8_t buffer[], int& size, int timeout_
 
   // LoRa Standby
   WriteRegisterVerify(SX1276REG_OpMode, 0x81);
-  usleep(10000);
+  threadsleep(10000);
 
   // Reset PA ramp back to default if it was not
   // Why? we are receiving? lWriteRegisterVerify(SX1276REG_PaRamp, 0x09);
@@ -610,9 +612,9 @@ bool SX1276Radio::ReceiveSimpleMessage(uint8_t buffer[], int& size, int timeout_
     t2 = steady_clock::now();
     // still waiting...
 #if TRACE_STATE_CHANGE
-    usleep(5);
+    threadsleep(5);
 #else
-    usleep(100);
+    threadsleep(100);
 #endif
   } while (t2 < t1); // once we get a valid header dont break until final
 
@@ -689,7 +691,7 @@ bool SX1276Radio::ReceiveSimpleMessage(uint8_t buffer[], int& size, int timeout_
   for (unsigned n=0; n < payloadSizeBytes; n++) {
     uint8_t byte = 0;
     spi_->ReadRegister(SX1276REG_Fifo, byte);
-    usleep(100);
+    threadsleep(100);
     ReadRegisterHarder(SX1276REG_FifoAddrPtr, v); // Note, in the future this extra check should be optional
     if (fault_ || v != RX_BASE_ADDR + v) { PR_ERROR("SPI fault reading packet.\n"); return false; }
     buffer[n] = byte;

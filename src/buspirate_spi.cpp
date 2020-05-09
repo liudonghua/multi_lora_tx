@@ -17,6 +17,7 @@
   along with SentriFarm Radio Relay.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "buspirate_spi.hpp"
+#include "utilities.h"
 #include "buspirate_binary.h"
 #include <assert.h>
 #include <fcntl.h>
@@ -82,7 +83,7 @@ bool BusPirateSPI::Powerup()
 
 bool BusPirateSPI::ReadRegister(uint8_t reg, uint8_t& result)
 {
-  usleep(100);
+  threadsleep(100);
   bool ok = bp_bitbang_spi_read_one(fd_, reg, &result);
   if (trace_reads_) { fprintf(stderr, "[R] %.2x --> %.2x\n", (int)reg, (int)result); }
   return ok;
@@ -91,6 +92,6 @@ bool BusPirateSPI::ReadRegister(uint8_t reg, uint8_t& result)
 bool BusPirateSPI::WriteRegister(uint8_t reg, uint8_t value)
 {
   if (trace_writes_) { fprintf(stderr, "[W] %.2x <-- %.2x\n", (int)reg, (int)value); }
-  usleep(100);
+  threadsleep(100);
   return bp_bitbang_spi_write_one(fd_, reg | 0x80, value);
 }

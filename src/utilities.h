@@ -15,7 +15,13 @@ Maintainer: Miguel Luis and Gregory Cristian
 #ifndef __UTILITIES_H__
 #define __UTILITIES_H__
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdint.h>
+
 
 #ifndef NULL
 #define NULL  0
@@ -101,5 +107,13 @@ void memset1( uint8_t *dst, uint8_t value, uint16_t size );
  * \retval hexChar Converted hexadecimal character
  */
 int8_t Nibble2HexChar( uint8_t a );
+
+
+void threadsleep(int ms);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __UTILITIES_H__

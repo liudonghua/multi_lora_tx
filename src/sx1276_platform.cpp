@@ -20,6 +20,7 @@
 #include "buspirate_spi.hpp"
 #include "buspirate_binary.h"
 #include "spidev_spi.hpp"
+#include "utilities.h"
 #include "spi.hpp"
 #include <string.h>
 
@@ -87,7 +88,7 @@ public:
   virtual bool ResetSX1276()  {
 #ifdef HAVE_UGPIO
     ugpio_set_value(rst_gp_, 0);
-    usleep(1000);
+    threadsleep(1000);
     ugpio_set_value(rst_gp_, 1);
 #endif
     return true;
