@@ -180,7 +180,7 @@ void SX1276Tx::threadtx()
 
 		memcpy((uint32_t *)(enbuffer+plen+9),&mic,4);
 		
-		srand((uint16_t)time(NULL));
+		srand((uint16_t)time(NULL)+devaddr);
 
 		if (freq_size > 1)
 			freq_hz = freqs[rand()%freq_size];

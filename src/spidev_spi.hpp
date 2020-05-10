@@ -21,6 +21,7 @@
 
 #include "spi.hpp"
 #include <string>
+#include <mutex> 
 
 class SpidevSPI : public SPI
 {
@@ -38,6 +39,7 @@ private:
   bool ConfigureSPI();
 
   std::string spidev_;
+  std::mutex mtx;
 };
 
 #endif // SPIDEV_SPI_HPP
