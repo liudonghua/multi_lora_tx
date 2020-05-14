@@ -65,7 +65,7 @@ bool SpidevSPI::ConfigureSPI()
   __u32  speed;
 
   // SPI_IOC_RD_MODE32 can be missing on some systems (like Xubuntu 14.04.2) and present on others (openwrt CC)
-  mtx.lock();
+
   if (ioctl(fd_, SPI_IOC_RD_MODE, &mode) < 0) {
           perror("SPI rd_mode");
           return false;
@@ -82,7 +82,7 @@ bool SpidevSPI::ConfigureSPI()
           perror("SPI max_speed_hz");
           return false;
   }
-  mtx.unlock();
+
   printf("%s: spi mode 0x%x, %d bits %sper word, %d Hz max\n",
           spidev_.c_str(), (int)mode, (int)bits, lsb ? "(lsb first) " : "", speed);
   return true;
@@ -100,9 +100,9 @@ bool SpidevSPI::ReadRegister(uint8_t reg, uint8_t& result)
   xfer[1].rx_buf = (unsigned long)buf;
   xfer[1].len = 1;
 
-  mtx.lock();
+  
   int status = ioctl(fd_, SPI_IOC_MESSAGE(2), xfer);
-  mtx.unlock();
+ 
   threadsleep(100);
   if (status < 0) { perror("SPI_IOC_MESSAGE"); return false; }
   if (status != 2) { fprintf(stderr, "SPI [R] status: %d at register %d\n", status, (int)reg); return false; }
@@ -126,9 +126,9 @@ bool SpidevSPI::WriteRegister(uint8_t reg, uint8_t value)
 
   if (trace_writes_) { fprintf(stderr, "[W] %.2x <-- %.2x\n", (int)reg, (int)value); }
 
-  mtx.lock();
+ 
   int status = ioctl(fd_, SPI_IOC_MESSAGE(1), xfer);
-  mtx.unlock();
+
   threadsleep(100);
   if (status < 0) { perror("SPI_IOC_MESSAGE"); return false; }
   if (status != 2) { fprintf(stderr, "SPI [W] status: %d at register %d\n", status, (int)reg); return false; }
