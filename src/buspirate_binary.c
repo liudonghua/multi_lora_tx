@@ -43,7 +43,7 @@ int bp_serial_readto(int fd, void* buf, unsigned bytes)
 bool bp_bitbang_cmd(int fd, uint8_t cmd_byte)
 {
   write(fd, &cmd_byte, 1);
-  threadsleep(10);
+  usleep(10);
   int n=bp_serial_readto(fd, &cmd_byte, 1);
   return (n==1 && cmd_byte == 0x1);
 }
@@ -55,7 +55,7 @@ bool bp_bitbang_spi_write_one(int fd, uint8_t reg, uint8_t value)
   write(fd, &cmd, 7);
 
   // 32 kHz?
-  threadsleep(1000); // 1000
+  usleep(1000); // 1000
   int n=bp_serial_readto(fd, &cmd, 1);
   if (n==0 || cmd[0] != 0x1 ) { return false; }
 	// if (n > 1) ...
@@ -70,7 +70,7 @@ bool bp_bitbang_spi_read_one(int fd, uint8_t reg, uint8_t *result)
   write(fd, &cmd, 6);
 
   // 32 kHz?
-  threadsleep(1000); // 1000
+  usleep(1000); // 1000
   int n=bp_serial_readto(fd, &cmd, 2);
   if (n!=2 || cmd[0] != 0x1 ) { return false; }
 
@@ -88,7 +88,7 @@ bool bp_enable_binary_spi_mode(int fd)
   for (int i=0; i<MAX_TRIES; i++) {
     char zero=0;
     if (1 != write(fd, &zero, 1)) { perror("write(fd)"); return false; }
-    threadsleep(1);
+    usleep(1);
     int n=bp_serial_readto(fd, buf, 5);
     if (n < 0) { perror("read(fd)"); return false; }
     // Swallow bogus replies before we tried 20 times
@@ -100,7 +100,7 @@ bool bp_enable_binary_spi_mode(int fd)
 
   char bspi = 1;
   if (1 != write(fd, &bspi, 1)) { perror("write(fd)"); return false; }
-  threadsleep(1);
+  usleep(1);
   int n=bp_serial_readto(fd, buf, 4);
   if (strncmp(buf, "SPI1", 4) == 0) { return true; }
   fprintf(stderr, " Unable to enter BusPirate bitbang mode SPI, invalid response: '%s'\n", buf);
@@ -136,7 +136,7 @@ bool bp_power_cycle(int fd)
   printf("POWER OFF, AUX:RESET ACTIVE(LOW), CS HIGH\n");
   ok=bp_bitbang_cmd(fd, 0x41);             // 0x4d == 0x40 | (cs)
   if (!ok) { perror("Unable to issue SPI PERIPH"); return false; }
-  threadsleep(1000 * 2000);
+  usleep(1000 * 20);
   bp_power_on(fd);
 }
 
@@ -166,14 +166,14 @@ bool bp_power_on(int fd)
   ok=bp_bitbang_cmd(fd, 0x49);             // 0x4d == 0x40 | (power==0x8) | (pullup=0x4) | (cs)
   if (!ok) { perror("Unable to issue SPI PERIPH"); return false; }
 
-  threadsleep(6 * 1000);
+  usleep(6 * 1000);
 
   // We have aux --> reset...
   printf("POWER ON, AUS:RESET DORMANT(HI), CS HI\n");
   ok=bp_bitbang_cmd(fd, 0x4b);             // 0x4d == 0x40 | (power==0x8) | (pullup=0x4) | aux=2 (cs)
   if (!ok) { perror("Unable to release /RESET (AUX=0)"); return false; }
 
-  threadsleep(6 * 1000);
+  usleep(6 * 1000);
 
   return true;
 }

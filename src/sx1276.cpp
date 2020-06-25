@@ -92,7 +92,7 @@ using boost::chrono::steady_clock;
 #define BW_TO_SWITCH(number) case number : return PASTE(SX1276_LORA_BW_, number)
 #define BW_FR_SWITCH(number) case PASTE(SX1276_LORA_BW_, number) : return number;
 
-#if 1
+#if 0
 #define DEBUG(x ...) printf(x)
 #else
 #define DEBUG(x ...)
@@ -217,14 +217,14 @@ void SX1276Radio::EnterStandby()
 {
   WriteRegisterVerify(SX1276REG_OpMode, 0x81);
   continuousSetup_ = false;
-  threadsleep(10000);
+  threadsleep(1000);
 }
 
 void SX1276Radio::EnterSleep()
 {
   WriteRegisterVerify(SX1276REG_OpMode, 0x80);
   continuousSetup_ = false;
-  threadsleep(10000);
+  threadsleep(1000);
 }
 
 bool SX1276Radio::Standby(uint8_t& old_mode)
@@ -295,7 +295,7 @@ bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf,uint8_t txpow)
   WriteRegisterVerify(SX1276REG_OpMode, v & 0xf8);
 
   // usleep seems to be emprically needed for bus pirate. TBD for spidev...
-  threadsleep(10000);
+  threadsleep(1000);
 
   // Switch to LoRa mode in sleep mode, then turn on standby mode
   Sleep();
@@ -354,7 +354,7 @@ bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf,uint8_t txpow)
 
   if (high_power_mode_) {
     // Using the inAir9b:
-    fprintf(stderr, "inAir9b High power Mode\n");
+    DEBUG( "inAir9b High power Mode\n");
     WriteRegisterVerify(SX1276REG_PaConfig, 0xff);
     WriteRegisterVerify(SX1276REG_PaDac, 0x87);
     // This also needs 3v3 on pin (7)
@@ -511,7 +511,7 @@ bool SX1276Radio::ReceiveSimpleMessage(uint8_t buffer[], int& size, int timeout_
 
   // LoRa Standby
   WriteRegisterVerify(SX1276REG_OpMode, 0x81);
-  threadsleep(10000);
+  threadsleep(1000);
 
   // Reset PA ramp back to default if it was not
   // Why? we are receiving? lWriteRegisterVerify(SX1276REG_PaRamp, 0x09);

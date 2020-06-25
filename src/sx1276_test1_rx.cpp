@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
 
   // TODO work out how to run without powering off / resetting the module
 
-  threadsleep(100);
+  threadsleep(10000);
   SX1276Radio radio(spi);
 
   cout << format("SX1276 Version: %.2x\n") % radio.version();
@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
       platform->ResetSX1276();
       radio.ChangeCarrier(919000000);
       radio.ApplyDefaultLoraConfiguration(9);
-      threadsleep(500000);
+      threadsleep(10000);
     } else if (timeout) { // this is a symbol timeout...
       tout1++; // dont print too often or we miss messages
       if (tout1 % 40 == 0) {

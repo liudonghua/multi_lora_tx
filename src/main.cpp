@@ -19,20 +19,12 @@ int main(int argc,char **argv)
 			
 			std::thread t(&SX1276Tx::threadtx,SX1276Tx(txConfs[i]));
 			t.detach();
-			sleep(2);
+			sleep(5);
 		}
 	}
-	// for (auto tx = txs.begin(); tx != txs.end(); ++tx) 
-	// {
-	// 	tx[0].thdTx().detach();
-	// }
-
 	while(1){
-
+		sleep(10);
 	}
-	// while (!txs.empty())
-	// 	txs.pop_back();
-
 	in.close();
 	return 0;
 

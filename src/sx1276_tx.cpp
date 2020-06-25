@@ -27,11 +27,12 @@
 #include "sx1276.hpp"
 #include "sx1276_platform.hpp"
 #include "LoRaMacCrypto.h"
+#include "util.hpp"
 #include "misc.hpp"
 #include "sx1276_tx.hpp"
 
 
-#define     PREME   0x40
+#define     PREME   0x80
 #define     FCNTL   0x00
 #define     FPORT   0x02
 
@@ -41,10 +42,10 @@ using boost::shared_ptr;
 using boost::format;
 using std::cout;
 
-#if 1
-#define   DBG 	printf
+#if 0
+#define   DBG(...) 	printf(__VAR_ARGS__)
 #else
-#define DBG
+#define DBG(...)
 #endif 
 
 SX1276Tx::SX1276Tx(Json::Value conf)
@@ -93,6 +94,7 @@ void SX1276Tx::threadtx()
 {
 	int i;
 	int sf;
+	bool fixed = false;
 	uint32_t xl=0;
 	uint32_t freq_hz;
 	bool xd ,faut = false;
@@ -103,12 +105,12 @@ void SX1276Tx::threadtx()
 
 	if (!spi) { PR_ERROR("Unable to get SPI instance\n"); return; }
 
-	unsigned inter_msg_delay_us = 20000;
+	unsigned inter_msg_delay_us = 5000;
 
 	//if (getenv("BEACON_INTERVAL")) { inter_msg_delay_us = atoi(getenv("BEACON_INTERVAL")); }
 	// Pass a small value in for RTL-SDK spectrum analyser to show up
 	if(timeout) 
-		inter_msg_delay_us = 1000*timeout;
+		inter_msg_delay_us = timeout*1000;
 
 	Misc::UserTraceSettings(spi);
 
@@ -154,9 +156,9 @@ void SX1276Tx::threadtx()
 
 		snprintf(msg, plen, "1abcdefghijklmnopqrstuvwxyzABCDEFGIJKLMNOPQRSTUVWXYZabcdefgijklmnopqrstuvwxyz01234567890abcdefghijklmnopqrstuvwxyzABCDEFGIJKLMNOPQRSTUVWXYZabcdefgijklmnopqrstuvwxyzbcdefghijklmnopqrstuvwxyzABCDEFGIJKLMNOPQRSTUVWXYZabcdefgijklmnopqrstuvwxyz");
 
-		printf("Beacon message: '%s'\n", safe_str(msg).c_str());
+		DBG("Beacon message: '%s'\n", safe_str(msg).c_str());
 		
-		printf("Predicted time on air: %fs\n", radio.PredictTimeOnAir(msg));
+		DBG("Predicted time on air: %fs\n", radio.PredictTimeOnAir(msg));
 
 		memcpy((uint8_t *)enbuffer,(uint8_t *)&preme,1);
 		//baddr = (((devaddr>>24) & 0x000000ff) | ((devaddr>>8) & 0x0000ff00) | ((devaddr<<8) & 0x00ff0000) | ((devaddr<<24) & 0xff000000));
@@ -195,28 +197,35 @@ void SX1276Tx::threadtx()
 		else
 			sf = sfs[0];
 		
-		printf("spread factor origin:%d \n",sf);
+		DBG("spread factor origin:%d \n",sf);
 		threadsleep(inter_msg_delay_us);
+		if(fixed == false){
+			radio.ChangeCarrier(freq_hz);
+			radio.ApplyDefaultLoraConfiguration(sf,txpow);
+			if((sf_size == 1) && (freq_hz == 1)){
+				fixed = true;
+			}
+		}
 		
-		radio.ChangeCarrier(freq_hz);
-		radio.ApplyDefaultLoraConfiguration(sf,txpow);
-		printf("spread factor:%d frequency:%d \n",sf,freq_hz);
+		DBG("spread factor:%d frequency:%d \n",sf,freq_hz);
+
 		//cout << format("Check read Carrier Frequency: %uHz\n") % radio.carrier();
 		faut = radio.fault();
+		
 		xd = radio.SendSimpleMessage(enbuffer,plen+13);
 		
 		if (!faut && xd) { 
 		 	fflush(stdout); 
 			radio.Standby(); 
-			printf("send success\n");
+			DBG("send success\n");
 			continue;
 		}
 		radio.Standby();
 		
 		faultCount++;
 		PR_ERROR("Fault on send detected: %d of %d\n", faultCount, total);
-		printf("Beacon message: '%s'\n", safe_str(msg).c_str());
-		printf("Predicted time on air: %fs\n", radio.PredictTimeOnAir(msg));
+		DBG("Beacon message: '%s'\n", safe_str(msg).c_str());
+		DBG("Predicted time on air: %fs\n", radio.PredictTimeOnAir(msg));
 		
 		radio.reset_fault();
 		platform->ResetSX1276();
@@ -225,7 +234,3 @@ void SX1276Tx::threadtx()
 		
 	}
 }
-
-// std::thread SX1276Tx::thdTx(){
-// 	return std::thread(&SX1276Tx::threadtx,this);
-// }

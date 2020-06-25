@@ -31,7 +31,11 @@
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
 #include "utilities.h"
+#include "util.hpp"
 #include "spidev_spi.hpp"
+#include <mutex>
+
+static std::mutex mtx;
 
 SpidevSPI::SpidevSPI()
 {
@@ -82,7 +86,10 @@ bool SpidevSPI::ConfigureSPI()
           perror("SPI max_speed_hz");
           return false;
   }
-
+  if (ioctl(fd_, SPI_IOC_WR_MAX_SPEED_HZ, &speed) < 0) {
+          perror("SPI max_speed_hz");
+          return false;
+  }
   printf("%s: spi mode 0x%x, %d bits %sper word, %d Hz max\n",
           spidev_.c_str(), (int)mode, (int)bits, lsb ? "(lsb first) " : "", speed);
   return true;
@@ -100,9 +107,10 @@ bool SpidevSPI::ReadRegister(uint8_t reg, uint8_t& result)
   xfer[1].rx_buf = (unsigned long)buf;
   xfer[1].len = 1;
 
-  
+
+  mtx.lock();
   int status = ioctl(fd_, SPI_IOC_MESSAGE(2), xfer);
- 
+  mtx.unlock();
   threadsleep(100);
   if (status < 0) { perror("SPI_IOC_MESSAGE"); return false; }
   if (status != 2) { fprintf(stderr, "SPI [R] status: %d at register %d\n", status, (int)reg); return false; }
@@ -126,9 +134,9 @@ bool SpidevSPI::WriteRegister(uint8_t reg, uint8_t value)
 
   if (trace_writes_) { fprintf(stderr, "[W] %.2x <-- %.2x\n", (int)reg, (int)value); }
 
- 
+  mtx.lock();
   int status = ioctl(fd_, SPI_IOC_MESSAGE(1), xfer);
-
+  mtx.unlock();
   threadsleep(100);
   if (status < 0) { perror("SPI_IOC_MESSAGE"); return false; }
   if (status != 2) { fprintf(stderr, "SPI [W] status: %d at register %d\n", status, (int)reg); return false; }

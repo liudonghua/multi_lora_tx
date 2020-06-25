@@ -20,6 +20,9 @@
 #define UTIL_HPP__
 
 #include <string>
+#include <boost/thread.hpp>
+#include <boost/chrono.hpp>
+
 #include <string.h>
 #include <stdio.h>
 
@@ -54,5 +57,20 @@ inline std::string safe_perror(int code, const char *prefix)
 }
 
 };
+
+inline void threadsleep(int us)
+{
+    //struct timespec tv;
+    /* Construct the timespec from the number of whole seconds... */
+    //tv.tv_sec = 0;
+    /* ... and the remainder in nanoseconds. */
+   // tv.tv_nsec = (long) 1000*us;
+
+    /* Sleep for the time specified in tv. If interrupted by a
+    signal, place the remaining time left to sleep back into tv. */
+   // int rval = nanosleep (&tv, &tv);
+    boost::this_thread::sleep_for(boost::chrono::microseconds(2));
+
+}
 
 #endif // UTIL_HPP__

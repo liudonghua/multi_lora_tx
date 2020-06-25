@@ -26,7 +26,7 @@ define Package/loratx
 	SECTION:=utils
 	CATEGORY:=Extra packages
 	TITLE:=loratx
-	DEPENDS:= +boost +boost-date_time +boost-chrono +boost-system +jsoncpp +libpthread
+	DEPENDS:= +boost +boost-date_time +boost-thread +boost-chrono +boost-system +jsoncpp +libpthread
 endef
 
 define Package/loratx/install

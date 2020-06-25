@@ -19,6 +19,7 @@
 #include "buspirate_spi.hpp"
 #include "utilities.h"
 #include "buspirate_binary.h"
+#include "util.hpp"
 #include <assert.h>
 #include <fcntl.h>
 #include <unistd.h>

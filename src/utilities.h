@@ -108,10 +108,6 @@ void memset1( uint8_t *dst, uint8_t value, uint16_t size );
  */
 int8_t Nibble2HexChar( uint8_t a );
 
-
-void threadsleep(int ms);
-
-
 #ifdef __cplusplus
 }
 #endif

@@ -13,7 +13,6 @@
  ******************************************************************************/
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
 #include "utilities.h"
 
 
@@ -75,18 +74,6 @@ int8_t Nibble2HexChar( uint8_t a )
     }
 }
 
-void threadsleep(int ms)
-{
-    struct timespec tv;
-    /* Construct the timespec from the number of whole seconds... */
-    tv.tv_sec = 0;
-    /* ... and the remainder in nanoseconds. */
-    tv.tv_nsec = (long) 1000*ms;
 
-    /* Sleep for the time specified in tv. If interrupted by a
-    signal, place the remaining time left to sleep back into tv. */
-    int rval = nanosleep (&tv, &tv);
-
-}
 /** @} */
 

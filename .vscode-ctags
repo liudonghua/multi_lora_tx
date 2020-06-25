@@ -1,0 +1,323 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	//
+AES_CMAC_CTX	src/cmac.h	/^    } AES_CMAC_CTX;$/;"	t	typeref:struct:_AES_CMAC_CTX
+AES_CMAC_DIGEST_LENGTH	src/cmac.h	/^#define AES_CMAC_DIGEST_LENGTH /;"	d
+AES_CMAC_Final	src/cmac.c	/^void AES_CMAC_Final(uint8_t digest[AES_CMAC_DIGEST_LENGTH], AES_CMAC_CTX *ctx)$/;"	f	typeref:typename:void
+AES_CMAC_Init	src/cmac.c	/^void AES_CMAC_Init(AES_CMAC_CTX *ctx)$/;"	f	typeref:typename:void
+AES_CMAC_KEY_LENGTH	src/cmac.h	/^#define AES_CMAC_KEY_LENGTH /;"	d
+AES_CMAC_SetKey	src/cmac.c	/^void AES_CMAC_SetKey(AES_CMAC_CTX *ctx, const uint8_t key[AES_CMAC_KEY_LENGTH])$/;"	f	typeref:typename:void
+AES_CMAC_Update	src/cmac.c	/^void AES_CMAC_Update(AES_CMAC_CTX *ctx, const uint8_t *data, uint32_t len)$/;"	f	typeref:typename:void
+AES_DEC_PREKEYED	src/aes.h	/^#  define AES_DEC_PREKEYED /;"	d
+AES_ENC_PREKEYED	src/aes.h	/^#  define AES_ENC_PREKEYED /;"	d
+AES_H	src/aes.h	/^#define AES_H$/;"	d
+AesCmacCtx	src/LoRaMacCrypto.c	/^static AES_CMAC_CTX AesCmacCtx[1];$/;"	v	typeref:typename:AES_CMAC_CTX[1]	file:
+AesContext	src/LoRaMacCrypto.c	/^static aes_context AesContext;$/;"	v	typeref:typename:aes_context	file:
+ApplyDefaultLoraConfiguration	src/sx1276.cpp	/^bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf,uint8_t txpow)$/;"	f	class:SX1276Radio	typeref:typename:bool
+BPOLY	src/aes.c	/^#define BPOLY /;"	d	file:
+BUSPIRATE_BINARY_H__	src/buspirate_binary.h	/^#define BUSPIRATE_BINARY_H__$/;"	d
+BUSPIRATE_SPI_HPP__	src/buspirate_spi.hpp	/^#define BUSPIRATE_SPI_HPP__$/;"	d
+BW_FR_SWITCH	src/sx1276.cpp	/^#define BW_FR_SWITCH(/;"	d	file:
+BW_TO_SWITCH	src/sx1276.cpp	/^#define BW_TO_SWITCH(/;"	d	file:
+BandwidthToBitfield	src/sx1276.cpp	/^inline unsigned BandwidthToBitfield(unsigned bandwidthHz)$/;"	f	typeref:typename:unsigned
+BitfieldToBandwidth	src/sx1276.cpp	/^inline unsigned BitfieldToBandwidth(unsigned bitfield)$/;"	f	typeref:typename:unsigned
+BusPiratePlatform	src/sx1276_platform.cpp	/^  BusPiratePlatform(const char *device)$/;"	f	class:BusPiratePlatform	file:
+BusPiratePlatform	src/sx1276_platform.cpp	/^class BusPiratePlatform : public SX1276Platform$/;"	c	file:
+BusPirateSPI	src/buspirate_spi.cpp	/^BusPirateSPI::BusPirateSPI()$/;"	f	class:BusPirateSPI
+BusPirateSPI	src/buspirate_spi.hpp	/^class BusPirateSPI : public SPI$/;"	c
+Carambola2Platform	src/sx1276_platform.cpp	/^  Carambola2Platform(const char *device)$/;"	f	class:Carambola2Platform	file:
+Carambola2Platform	src/sx1276_platform.cpp	/^class Carambola2Platform : public SX1276Platform$/;"	c	file:
+ChangeCarrier	src/sx1276.cpp	/^bool SX1276Radio::ChangeCarrier(uint32_t carrier_hz)$/;"	f	class:SX1276Radio	typeref:typename:bool
+ConfigSPI	src/buspirate_spi.cpp	/^bool BusPirateSPI::ConfigSPI()$/;"	f	class:BusPirateSPI	typeref:typename:bool
+ConfigSerial	src/buspirate_spi.cpp	/^bool BusPirateSPI::ConfigSerial()$/;"	f	class:BusPirateSPI	typeref:typename:bool
+ConfigureSPI	src/spidev_spi.cpp	/^bool SpidevSPI::ConfigureSPI()$/;"	f	class:SpidevSPI	typeref:typename:bool
+DBG	src/sx1276_tx.cpp	/^#define   DBG /;"	d	file:
+DBG	src/sx1276_tx.cpp	/^#define DBG$/;"	d	file:
+DEBUG	src/sx1276.cpp	/^#define DEBUG(/;"	d	file:
+DEFAULT_INTRA_DELAY_US	src/sx1276.hpp	/^#define DEFAULT_INTRA_DELAY_US /;"	d
+DPOLY	src/aes.c	/^#define DPOLY /;"	d	file:
+EnableBinaryMode	src/buspirate_spi.cpp	/^bool BusPirateSPI::EnableBinaryMode()$/;"	f	class:BusPirateSPI	typeref:typename:bool
+EnableContinuousRx	src/sx1276.hpp	/^  void EnableContinuousRx(bool enabled) { continuousMode_ = enabled; }$/;"	f	class:SX1276Radio	typeref:typename:void
+EnableHighPowerMode	src/sx1276.hpp	/^  void EnableHighPowerMode(bool enabled) { high_power_mode_ = enabled; }$/;"	f	class:SX1276Radio	typeref:typename:void
+EnterSleep	src/sx1276.cpp	/^void SX1276Radio::EnterSleep()$/;"	f	class:SX1276Radio	typeref:typename:void
+EnterStandby	src/sx1276.cpp	/^void SX1276Radio::EnterStandby()$/;"	f	class:SX1276Radio	typeref:typename:void
+FCNTL	src/sx1276_tx.cpp	/^#define     FCNTL /;"	d	file:
+FPORT	src/sx1276_tx.cpp	/^#define     FPORT /;"	d	file:
+GetInstance	src/sx1276_platform.cpp	/^shared_ptr<SX1276Platform> SX1276Platform::GetInstance(const char *device)$/;"	f	class:SX1276Platform	typeref:typename:shared_ptr<SX1276Platform>
+GetSPI	src/sx1276_platform.cpp	/^  virtual boost::shared_ptr<SPI> GetSPI() const { return spi_; }$/;"	f	class:BusPiratePlatform	typeref:typename:boost::shared_ptr<SPI>	file:
+GetSPI	src/sx1276_platform.cpp	/^  virtual boost::shared_ptr<SPI> GetSPI() const { return spi_; }$/;"	f	class:Carambola2Platform	typeref:typename:boost::shared_ptr<SPI>	file:
+HAVE_UINT_32T	src/aes.c	/^#  define HAVE_UINT_32T$/;"	d	file:
+IsOpen	src/buspirate_spi.hpp	/^  virtual bool IsOpen() const { return fd_ >= 0; }$/;"	f	class:BusPirateSPI	typeref:typename:bool
+IsOpen	src/spidev_spi.hpp	/^  virtual bool IsOpen() const { return fd_ >= 0; }$/;"	f	class:SpidevSPI	typeref:typename:bool
+LORAMAC_MIC_BLOCK_B0_SIZE	src/LoRaMacCrypto.c	/^#define LORAMAC_MIC_BLOCK_B0_SIZE /;"	d	file:
+LSHIFT	src/cmac.c	/^#define LSHIFT(/;"	d	file:
+LoRaMacComputeMic	src/LoRaMacCrypto.c	/^void LoRaMacComputeMic( const uint8_t *buffer, uint16_t size, const uint8_t *key, uint32_t addre/;"	f	typeref:typename:void
+LoRaMacPayloadDecrypt	src/LoRaMacCrypto.c	/^void LoRaMacPayloadDecrypt( const uint8_t *buffer, uint16_t size, const uint8_t *key, uint32_t a/;"	f	typeref:typename:void
+LoRaMacPayloadEncrypt	src/LoRaMacCrypto.c	/^void LoRaMacPayloadEncrypt( const uint8_t *buffer, uint16_t size, const uint8_t *key, uint32_t a/;"	f	typeref:typename:void
+MAX	src/utilities.h	/^#define MAX(/;"	d
+MAX_NODES	src/sx1276_tx.cpp	/^#define    MAX_NODES	/;"	d	file:
+MIN	src/utilities.h	/^#define MIN(/;"	d
+MISC_HPP__	src/misc.hpp	/^#define MISC_HPP__$/;"	d
+M_last	src/cmac.h	/^            uint8_t        M_last[16];$/;"	m	struct:_AES_CMAC_CTX	typeref:typename:uint8_t[16]
+M_n	src/cmac.h	/^            uint32_t       M_n;$/;"	m	struct:_AES_CMAC_CTX	typeref:typename:uint32_t
+Mic	src/LoRaMacCrypto.c	/^static uint8_t Mic[16];$/;"	v	typeref:typename:uint8_t[16]	file:
+MicBlockB0	src/LoRaMacCrypto.c	/^static uint8_t MicBlockB0[] = { 0x49, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,$/;"	v	typeref:typename:uint8_t[]	file:
+Misc	src/misc.hpp	/^class Misc {$/;"	c
+NULL	src/utilities.h	/^#define NULL /;"	d
+N_BLOCK	src/aes.h	/^#define N_BLOCK /;"	d
+N_COL	src/aes.h	/^#define N_COL /;"	d
+N_MAX_ROUNDS	src/aes.h	/^#define N_MAX_ROUNDS /;"	d
+N_ROW	src/aes.h	/^#define N_ROW /;"	d
+Nibble2HexChar	src/utilities.c	/^int8_t Nibble2HexChar( uint8_t a )$/;"	f	typeref:typename:int8_t
+Open	src/buspirate_spi.cpp	/^bool BusPirateSPI::Open(const char *ttydev)$/;"	f	class:BusPirateSPI	typeref:typename:bool
+Open	src/spidev_spi.cpp	/^bool SpidevSPI::Open(const char *spidev)$/;"	f	class:SpidevSPI	typeref:typename:bool
+PASTE	src/sx1276.cpp	/^#define PASTE(/;"	d	file:
+POW2	src/utilities.h	/^#define POW2(/;"	d
+PREME	src/sx1276_tx.cpp	/^#define     PREME /;"	d	file:
+PR_ERROR	src/misc.hpp	/^#define PR_ERROR(/;"	d
+PowerCycleSX1276	src/sx1276_platform.cpp	/^  virtual bool PowerCycleSX1276(bool powered)  { return true; }$/;"	f	class:Carambola2Platform	typeref:typename:bool	file:
+PowerCycleSX1276	src/sx1276_platform.cpp	/^  virtual bool PowerCycleSX1276(bool powered) { return bp_power_cycle(spi_->fd_); }$/;"	f	class:BusPiratePlatform	typeref:typename:bool	file:
+PowerSX1276	src/sx1276_platform.cpp	/^  virtual bool PowerSX1276(bool powered) { return powered ? bp_power_off(spi_->fd_) : bp_power_o/;"	f	class:BusPiratePlatform	typeref:typename:bool	file:
+PowerSX1276	src/sx1276_platform.cpp	/^  virtual bool PowerSX1276(bool powered) { return true; }$/;"	f	class:Carambola2Platform	typeref:typename:bool	file:
+Powerup	src/buspirate_spi.cpp	/^bool BusPirateSPI::Powerup()$/;"	f	class:BusPirateSPI	typeref:typename:bool
+PredictTimeOnAir	src/sx1276.cpp	/^float SX1276Radio::PredictTimeOnAir(const char *payload) const$/;"	f	class:SX1276Radio	typeref:typename:float
+PredictTimeOnAir	src/sx1276.cpp	/^float SX1276Radio::PredictTimeOnAir(const void *payload, unsigned len) const$/;"	f	class:SX1276Radio	typeref:typename:float
+RAND_LOCAL_MAX	src/utilities.c	/^#define RAND_LOCAL_MAX /;"	d	file:
+ReadCarrier	src/sx1276.cpp	/^void SX1276Radio::ReadCarrier()$/;"	f	class:SX1276Radio	typeref:typename:void
+ReadRegister	src/buspirate_spi.cpp	/^bool BusPirateSPI::ReadRegister(uint8_t reg, uint8_t& result)$/;"	f	class:BusPirateSPI	typeref:typename:bool
+ReadRegister	src/spidev_spi.cpp	/^bool SpidevSPI::ReadRegister(uint8_t reg, uint8_t& result)$/;"	f	class:SpidevSPI	typeref:typename:bool
+ReadRegisterHarder	src/sx1276.cpp	/^bool SX1276Radio::ReadRegisterHarder(uint8_t reg, uint8_t& value, unsigned retries)$/;"	f	class:SX1276Radio	typeref:typename:bool
+ReceiveSimpleMessage	src/sx1276.cpp	/^bool SX1276Radio::ReceiveSimpleMessage(uint8_t buffer[], int& size, int timeout_ms, bool& timeou/;"	f	class:SX1276Radio	typeref:typename:bool
+ResetSX1276	src/sx1276_platform.cpp	/^  virtual bool ResetSX1276()  {$/;"	f	class:Carambola2Platform	typeref:typename:bool	file:
+ResetSX1276	src/sx1276_platform.cpp	/^  virtual bool ResetSX1276() { return bp_cycle_reset(spi_->fd_); }$/;"	f	class:BusPiratePlatform	typeref:typename:bool	file:
+SPI	src/spi.hpp	/^  SPI() : fd_(-1), trace_reads_(false), trace_next_suppress_(false), trace_writes_(false) {}$/;"	f	class:SPI
+SPI	src/spi.hpp	/^class SPI$/;"	c
+SPIDEV_SPI_HPP__	src/spidev_spi.hpp	/^#define SPIDEV_SPI_HPP__$/;"	d
+SPI_HPP__	src/spi.hpp	/^#define SPI_HPP__$/;"	d
+SX1276Platform	src/sx1276_platform.cpp	/^SX1276Platform::SX1276Platform()$/;"	f	class:SX1276Platform
+SX1276Platform	src/sx1276_platform.hpp	/^class SX1276Platform : public boost::noncopyable$/;"	c
+SX1276REG_DioMapping1	src/sx1276.cpp	/^#define SX1276REG_DioMapping1 /;"	d	file:
+SX1276REG_DioMapping2	src/sx1276.cpp	/^#define SX1276REG_DioMapping2 /;"	d	file:
+SX1276REG_Fifo	src/sx1276.cpp	/^#define SX1276REG_Fifo /;"	d	file:
+SX1276REG_FifoAddrPtr	src/sx1276.cpp	/^#define SX1276REG_FifoAddrPtr /;"	d	file:
+SX1276REG_FifoRxBaseAddr	src/sx1276.cpp	/^#define SX1276REG_FifoRxBaseAddr /;"	d	file:
+SX1276REG_FifoRxByteAddrPtr	src/sx1276.cpp	/^#define SX1276REG_FifoRxByteAddrPtr /;"	d	file:
+SX1276REG_FifoRxCurrentAddr	src/sx1276.cpp	/^#define SX1276REG_FifoRxCurrentAddr /;"	d	file:
+SX1276REG_FifoRxNbBytes	src/sx1276.cpp	/^#define SX1276REG_FifoRxNbBytes /;"	d	file:
+SX1276REG_FifoTxBaseAddr	src/sx1276.cpp	/^#define SX1276REG_FifoTxBaseAddr /;"	d	file:
+SX1276REG_FrfLsb	src/sx1276.cpp	/^#define SX1276REG_FrfLsb /;"	d	file:
+SX1276REG_FrfMid	src/sx1276.cpp	/^#define SX1276REG_FrfMid /;"	d	file:
+SX1276REG_FrfMsb	src/sx1276.cpp	/^#define SX1276REG_FrfMsb /;"	d	file:
+SX1276REG_IrqFlags	src/sx1276.cpp	/^#define SX1276REG_IrqFlags /;"	d	file:
+SX1276REG_IrqFlagsMask	src/sx1276.cpp	/^#define SX1276REG_IrqFlagsMask /;"	d	file:
+SX1276REG_Lna	src/sx1276.cpp	/^#define SX1276REG_Lna /;"	d	file:
+SX1276REG_MaxPayloadLength	src/sx1276.cpp	/^#define SX1276REG_MaxPayloadLength /;"	d	file:
+SX1276REG_ModemConfig1	src/sx1276.cpp	/^#define SX1276REG_ModemConfig1 /;"	d	file:
+SX1276REG_ModemConfig2	src/sx1276.cpp	/^#define SX1276REG_ModemConfig2 /;"	d	file:
+SX1276REG_ModemStat	src/sx1276.cpp	/^#define SX1276REG_ModemStat /;"	d	file:
+SX1276REG_Ocp	src/sx1276.cpp	/^#define SX1276REG_Ocp /;"	d	file:
+SX1276REG_OpMode	src/sx1276.cpp	/^#define SX1276REG_OpMode /;"	d	file:
+SX1276REG_PaConfig	src/sx1276.cpp	/^#define SX1276REG_PaConfig /;"	d	file:
+SX1276REG_PaDac	src/sx1276.cpp	/^#define SX1276REG_PaDac /;"	d	file:
+SX1276REG_PaRamp	src/sx1276.cpp	/^#define SX1276REG_PaRamp /;"	d	file:
+SX1276REG_PacketRssi	src/sx1276.cpp	/^#define SX1276REG_PacketRssi /;"	d	file:
+SX1276REG_PacketSnr	src/sx1276.cpp	/^#define SX1276REG_PacketSnr /;"	d	file:
+SX1276REG_PayloadLength	src/sx1276.cpp	/^#define SX1276REG_PayloadLength /;"	d	file:
+SX1276REG_PreambleLSB	src/sx1276.cpp	/^#define SX1276REG_PreambleLSB /;"	d	file:
+SX1276REG_PreambleMSB	src/sx1276.cpp	/^#define SX1276REG_PreambleMSB /;"	d	file:
+SX1276REG_Rssi	src/sx1276.cpp	/^#define SX1276REG_Rssi /;"	d	file:
+SX1276REG_RxHeaderCntValueLsb	src/sx1276.cpp	/^#define SX1276REG_RxHeaderCntValueLsb /;"	d	file:
+SX1276REG_RxHeaderCntValueMsb	src/sx1276.cpp	/^#define SX1276REG_RxHeaderCntValueMsb /;"	d	file:
+SX1276REG_RxPacketCntValueLsb	src/sx1276.cpp	/^#define SX1276REG_RxPacketCntValueLsb /;"	d	file:
+SX1276REG_RxPacketCntValueMsb	src/sx1276.cpp	/^#define SX1276REG_RxPacketCntValueMsb /;"	d	file:
+SX1276REG_SymbTimeoutLsb	src/sx1276.cpp	/^#define SX1276REG_SymbTimeoutLsb /;"	d	file:
+SX1276Radio	src/sx1276.cpp	/^SX1276Radio::SX1276Radio(const boost::shared_ptr<SPI>& spi)$/;"	f	class:SX1276Radio
+SX1276Radio	src/sx1276.hpp	/^class SX1276Radio : boost::noncopyable$/;"	c
+SX1276Tx	src/sx1276_tx.cpp	/^SX1276Tx::SX1276Tx(Json::Value conf)$/;"	f	class:SX1276Tx
+SX1276Tx	src/sx1276_tx.hpp	/^class SX1276Tx$/;"	c
+SX1276_HPP__	src/sx1276.hpp	/^#define SX1276_HPP__$/;"	d
+SX1276_LORA_BW_10400	src/sx1276.cpp	/^#define SX1276_LORA_BW_10400 /;"	d	file:
+SX1276_LORA_BW_125000	src/sx1276.cpp	/^#define SX1276_LORA_BW_125000 /;"	d	file:
+SX1276_LORA_BW_15600	src/sx1276.cpp	/^#define SX1276_LORA_BW_15600 /;"	d	file:
+SX1276_LORA_BW_20800	src/sx1276.cpp	/^#define SX1276_LORA_BW_20800 /;"	d	file:
+SX1276_LORA_BW_250000	src/sx1276.cpp	/^#define SX1276_LORA_BW_250000 /;"	d	file:
+SX1276_LORA_BW_31250	src/sx1276.cpp	/^#define SX1276_LORA_BW_31250 /;"	d	file:
+SX1276_LORA_BW_41700	src/sx1276.cpp	/^#define SX1276_LORA_BW_41700 /;"	d	file:
+SX1276_LORA_BW_500000	src/sx1276.cpp	/^#define SX1276_LORA_BW_500000 /;"	d	file:
+SX1276_LORA_BW_62500	src/sx1276.cpp	/^#define SX1276_LORA_BW_62500 /;"	d	file:
+SX1276_LORA_BW_7800	src/sx1276.cpp	/^#define SX1276_LORA_BW_7800 /;"	d	file:
+SX1276_LORA_CODING_RATE_4_5	src/sx1276.cpp	/^#define SX1276_LORA_CODING_RATE_4_5 /;"	d	file:
+SX1276_LORA_CODING_RATE_4_6	src/sx1276.cpp	/^#define SX1276_LORA_CODING_RATE_4_6 /;"	d	file:
+SX1276_LORA_CODING_RATE_4_7	src/sx1276.cpp	/^#define SX1276_LORA_CODING_RATE_4_7 /;"	d	file:
+SX1276_LORA_CODING_RATE_4_8	src/sx1276.cpp	/^#define SX1276_LORA_CODING_RATE_4_8 /;"	d	file:
+SX1276_PLATFORM_HPP__	src/sx1276_platform.hpp	/^#define SX1276_PLATFORM_HPP__$/;"	d
+SX1276_TX_HPP__	src/sx1276_tx.hpp	/^#define SX1276_TX_HPP__$/;"	d
+SendSimpleMessage	src/sx1276.cpp	/^bool SX1276Radio::SendSimpleMessage(const char *payload)$/;"	f	class:SX1276Radio	typeref:typename:bool
+SendSimpleMessage	src/sx1276.cpp	/^bool SX1276Radio::SendSimpleMessage(const void *payload, unsigned n)$/;"	f	class:SX1276Radio	typeref:typename:bool
+SetPreamble	src/sx1276.hpp	/^  void SetPreamble(unsigned preamble) { preamble_ = preamble; }$/;"	f	class:SX1276Radio	typeref:typename:void
+SetSymbolTimeout	src/sx1276.hpp	/^  void SetSymbolTimeout(unsigned symbolTimeout) { symbolTimeout_ = symbolTimeout; }$/;"	f	class:SX1276Radio	typeref:typename:void
+Sleep	src/sx1276.cpp	/^bool SX1276Radio::Sleep(uint8_t& old_mode)$/;"	f	class:SX1276Radio	typeref:typename:bool
+Sleep	src/sx1276.hpp	/^  bool Sleep() { uint8_t dummy; return Sleep(dummy); }$/;"	f	class:SX1276Radio	typeref:typename:bool
+SpidevSPI	src/spidev_spi.cpp	/^SpidevSPI::SpidevSPI()$/;"	f	class:SpidevSPI
+SpidevSPI	src/spidev_spi.hpp	/^class SpidevSPI : public SPI$/;"	c
+Standby	src/sx1276.cpp	/^bool SX1276Radio::Standby(uint8_t& old_mode)$/;"	f	class:SX1276Radio	typeref:typename:bool
+Standby	src/sx1276.hpp	/^  bool Standby() { uint8_t dummy; return Standby(dummy); }$/;"	f	class:SX1276Radio	typeref:typename:bool
+TRACE_STATE_CHANGE	src/sx1276.cpp	/^#define TRACE_STATE_CHANGE /;"	d	file:
+TraceReads	src/spi.hpp	/^  inline void TraceReads(bool enabled) { trace_reads_ = enabled; }$/;"	f	class:SPI	typeref:typename:void
+TraceSuppressNext	src/spi.hpp	/^  inline void TraceSuppressNext(bool suppressed) { trace_next_suppress_ = suppressed; }$/;"	f	class:SPI	typeref:typename:void
+TraceWrites	src/spi.hpp	/^  inline void TraceWrites(bool enabled) { trace_writes_ = enabled; }$/;"	f	class:SPI	typeref:typename:void
+USE_TABLES	src/aes.c	/^#  define USE_TABLES$/;"	d	file:
+UTIL_HPP__	src/util.hpp	/^#define UTIL_HPP__$/;"	d
+UserTraceSettings	src/misc.cpp	/^void Misc::UserTraceSettings(shared_ptr<SPI> spi)$/;"	f	class:Misc	typeref:typename:void
+VERSION_1	src/aes.c	/^#  define VERSION_1$/;"	d	file:
+WPOLY	src/aes.c	/^#define WPOLY /;"	d	file:
+WriteRegister	src/buspirate_spi.cpp	/^bool BusPirateSPI::WriteRegister(uint8_t reg, uint8_t value)$/;"	f	class:BusPirateSPI	typeref:typename:bool
+WriteRegister	src/spidev_spi.cpp	/^bool SpidevSPI::WriteRegister(uint8_t reg, uint8_t value)$/;"	f	class:SpidevSPI	typeref:typename:bool
+WriteRegisterVerify	src/sx1276.cpp	/^bool SX1276Radio::WriteRegisterVerify(uint8_t reg, uint8_t value, unsigned intra_delay)$/;"	f	class:SX1276Radio	typeref:typename:bool
+WriteRegisterVerifyMask	src/sx1276.cpp	/^bool SX1276Radio::WriteRegisterVerifyMask(uint8_t reg, uint8_t value, uint8_t mask, unsigned int/;"	f	class:SX1276Radio	typeref:typename:bool
+X	src/cmac.h	/^            uint8_t        X[16];$/;"	m	struct:_AES_CMAC_CTX	typeref:typename:uint8_t[16]
+XOR	src/cmac.c	/^#define XOR(/;"	d	file:
+_AES_CMAC_CTX	src/cmac.h	/^typedef struct _AES_CMAC_CTX {$/;"	s
+_CMAC_H_	src/cmac.h	/^#define _CMAC_H_$/;"	d
+_GPL_SOURCE	src/buspirate_binary.c	/^#define _GPL_SOURCE$/;"	d	file:
+__LORAMAC_CRYPTO_H__	src/LoRaMacCrypto.h	/^#define __LORAMAC_CRYPTO_H__$/;"	d
+__UTILITIES_H__	src/utilities.h	/^#define __UTILITIES_H__$/;"	d
+__anonb4d0a92b0108	src/aes.h	/^{   uint8_t ksch[(N_MAX_ROUNDS + 1) * N_BLOCK];$/;"	s
+aBlock	src/LoRaMacCrypto.c	/^static uint8_t aBlock[] = { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,$/;"	v	typeref:typename:uint8_t[]	file:
+actual_hz_	src/sx1276.hpp	/^  uint32_t actual_hz_;           \/\/\/< Actual carrier frequency, hz$/;"	m	class:SX1276Radio	typeref:typename:uint32_t
+add_round_key	src/aes.c	/^static void add_round_key( uint8_t d[N_BLOCK], const uint8_t k[N_BLOCK] )$/;"	f	typeref:typename:void	file:
+aes_cbc_decrypt	src/aes.c	/^return_type aes_cbc_decrypt( const uint8_t *in, uint8_t *out,$/;"	f	typeref:typename:return_type
+aes_cbc_encrypt	src/aes.c	/^return_type aes_cbc_encrypt( const uint8_t *in, uint8_t *out,$/;"	f	typeref:typename:return_type
+aes_context	src/aes.h	/^} aes_context;$/;"	t	typeref:struct:__anonb4d0a92b0108
+aes_decrypt	src/aes.c	/^return_type aes_decrypt( const uint8_t in[N_BLOCK], uint8_t out[N_BLOCK], const aes_context ctx[/;"	f	typeref:typename:return_type
+aes_decrypt_128	src/aes.c	/^void aes_decrypt_128( const uint8_t in[N_BLOCK], uint8_t out[N_BLOCK],$/;"	f	typeref:typename:void
+aes_decrypt_256	src/aes.c	/^void aes_decrypt_256( const uint8_t in[N_BLOCK], uint8_t out[N_BLOCK],$/;"	f	typeref:typename:void
+aes_encrypt	src/aes.c	/^return_type aes_encrypt( const uint8_t in[N_BLOCK], uint8_t  out[N_BLOCK], const aes_context ctx/;"	f	typeref:typename:return_type
+aes_encrypt_128	src/aes.c	/^void aes_encrypt_128( const uint8_t in[N_BLOCK], uint8_t out[N_BLOCK],$/;"	f	typeref:typename:void
+aes_encrypt_256	src/aes.c	/^void aes_encrypt_256( const uint8_t in[N_BLOCK], uint8_t out[N_BLOCK],$/;"	f	typeref:typename:void
+aes_set_key	src/aes.c	/^return_type aes_set_key( const uint8_t key[], length_type keylen, aes_context ctx[1] )$/;"	f	typeref:typename:return_type
+block_copy	src/aes.c	/^#  define block_copy(/;"	d	file:
+block_copy_nn	src/aes.c	/^#  define block_copy_nn(/;"	d	file:
+bp_bitbang_cmd	src/buspirate_binary.c	/^bool bp_bitbang_cmd(int fd, uint8_t cmd_byte)$/;"	f	typeref:typename:bool
+bp_bitbang_spi_read_one	src/buspirate_binary.c	/^bool bp_bitbang_spi_read_one(int fd, uint8_t reg, uint8_t *result)$/;"	f	typeref:typename:bool
+bp_bitbang_spi_write_one	src/buspirate_binary.c	/^bool bp_bitbang_spi_write_one(int fd, uint8_t reg, uint8_t value)$/;"	f	typeref:typename:bool
+bp_cycle_reset	src/buspirate_binary.c	/^bool bp_cycle_reset(int fd)$/;"	f	typeref:typename:bool
+bp_enable_binary_spi_mode	src/buspirate_binary.c	/^bool bp_enable_binary_spi_mode(int fd)$/;"	f	typeref:typename:bool
+bp_power_cycle	src/buspirate_binary.c	/^bool bp_power_cycle(int fd)$/;"	f	typeref:typename:bool
+bp_power_off	src/buspirate_binary.c	/^bool bp_power_off(int fd)$/;"	f	typeref:typename:bool
+bp_power_on	src/buspirate_binary.c	/^bool bp_power_on(int fd)$/;"	f	typeref:typename:bool
+bp_serial_readto	src/buspirate_binary.c	/^int bp_serial_readto(int fd, void* buf, unsigned bytes)$/;"	f	typeref:typename:int
+bp_setup_serial	src/buspirate_binary.c	/^bool bp_setup_serial(int fd, speed_t speed)$/;"	f	typeref:typename:bool
+bp_spi_config	src/buspirate_binary.c	/^bool bp_spi_config(int fd)$/;"	f	typeref:typename:bool
+buf2str	src/util.hpp	/^inline std::string buf2str(const void *data, unsigned len)$/;"	f	namespace:util	typeref:typename:std::string
+carrier	src/sx1276.hpp	/^  uint32_t carrier() const { return actual_hz_; }$/;"	f	class:SX1276Radio	typeref:typename:uint32_t
+continuousMode_	src/sx1276.hpp	/^  bool continuousMode_;          \/\/\/< If true then next call to ReceiveSimpleMessage will use/;"	m	class:SX1276Radio	typeref:typename:bool
+continuousSetup_	src/sx1276.hpp	/^  bool continuousSetup_;$/;"	m	class:SX1276Radio	typeref:typename:bool
+copy_and_key	src/aes.c	/^static void copy_and_key( void *d, const void *s, const void *k )$/;"	f	typeref:typename:void	file:
+copy_block	src/aes.c	/^static void copy_block( void *d, const void *s )$/;"	f	typeref:typename:void	file:
+copy_block_nn	src/aes.c	/^static void copy_block_nn( uint8_t * d, const uint8_t *s, uint8_t nn )$/;"	f	typeref:typename:void	file:
+d2	src/aes.c	/^#define d2(/;"	d	file:
+device	src/sx1276_tx.hpp	/^	char		device[15];$/;"	m	class:SX1276Tx	typeref:typename:char[15]
+device_	src/sx1276_platform.cpp	/^  std::string device_;$/;"	m	class:BusPiratePlatform	typeref:typename:std::string	file:
+device_	src/sx1276_platform.cpp	/^  std::string device_;$/;"	m	class:Carambola2Platform	typeref:typename:std::string	file:
+f1	src/aes.c	/^#define f1(/;"	d	file:
+f2	src/aes.c	/^#define f2(/;"	d	file:
+f3	src/aes.c	/^#define f3(/;"	d	file:
+f4	src/aes.c	/^#define f4(/;"	d	file:
+f8	src/aes.c	/^#define f8(/;"	d	file:
+f9	src/aes.c	/^#define f9(/;"	d	file:
+fault	src/sx1276.hpp	/^  bool fault() const { return fault_; }$/;"	f	class:SX1276Radio	typeref:typename:bool
+fault_	src/sx1276.hpp	/^  bool fault_;                   \/\/\/< True if something went wrong$/;"	m	class:SX1276Radio	typeref:typename:bool
+fb	src/aes.c	/^#define fb(/;"	d	file:
+fd	src/aes.c	/^#define fd(/;"	d	file:
+fd_	src/spi.hpp	/^  int fd_;$/;"	m	class:SPI	typeref:typename:int
+fe	src/aes.c	/^#define fe(/;"	d	file:
+freq_size	src/sx1276_tx.hpp	/^	uint8_t		freq_size;$/;"	m	class:SX1276Tx	typeref:typename:uint8_t
+freqs	src/sx1276_tx.hpp	/^	uint32_t	*freqs;$/;"	m	class:SX1276Tx	typeref:typename:uint32_t *
+fwd_affine	src/aes.c	/^uint8_t fwd_affine(const uint8_t x)$/;"	f	typeref:typename:uint8_t
+gf_inv	src/aes.c	/^static uint8_t gf_inv(const uint8_t x)$/;"	f	typeref:typename:uint8_t	file:
+gfm2_sb	src/aes.c	/^#define gfm2_sb(/;"	d	file:
+gfm3_sb	src/aes.c	/^#define gfm3_sb(/;"	d	file:
+gfm_9	src/aes.c	/^#define gfm_9(/;"	d	file:
+gfm_b	src/aes.c	/^#define gfm_b(/;"	d	file:
+gfm_d	src/aes.c	/^#define gfm_d(/;"	d	file:
+gfm_e	src/aes.c	/^#define gfm_e(/;"	d	file:
+hibit	src/aes.c	/^static uint8_t hibit(const uint8_t x)$/;"	f	typeref:typename:uint8_t	file:
+high_power_mode_	src/sx1276.hpp	/^  bool high_power_mode_;$/;"	m	class:SX1276Radio	typeref:typename:bool
+inv_affine	src/aes.c	/^uint8_t inv_affine(const uint8_t x)$/;"	f	typeref:typename:uint8_t
+inv_mix_sub_columns	src/aes.c	/^  static void inv_mix_sub_columns( uint8_t dt[N_BLOCK] )$/;"	f	typeref:typename:void	file:
+inv_shift_sub_rows	src/aes.c	/^static void inv_shift_sub_rows( uint8_t st[N_BLOCK] )$/;"	f	typeref:typename:void	file:
+is_box	src/aes.c	/^#define is_box(/;"	d	file:
+isb_data	src/aes.c	/^#define isb_data(/;"	d	file:
+ksch	src/aes.h	/^{   uint8_t ksch[(N_MAX_ROUNDS + 1) * N_BLOCK];$/;"	m	struct:__anonb4d0a92b0108	typeref:typename:uint8_t[]
+last_rssi	src/sx1276.hpp	/^  int last_rssi() const { return last_rssi_dbm_; }$/;"	f	class:SX1276Radio	typeref:typename:int
+last_rssi_dbm_	src/sx1276.hpp	/^  int last_rssi_dbm_;            \/\/\/< RSSI read during last call to ReceiveSimpleMessage$/;"	m	class:SX1276Radio	typeref:typename:int
+length_type	src/aes.h	/^typedef uint8_t length_type;$/;"	t	typeref:typename:uint8_t
+main	src/main.cpp	/^int main(int argc,char **argv)$/;"	f	typeref:typename:int
+main	src/sx1276_dump_regs.cpp	/^int main(int argc, char* argv[])$/;"	f	typeref:typename:int
+main	src/sx1276_test1_rx.cpp	/^int main(int argc, char* argv[])$/;"	f	typeref:typename:int
+max_count	src/sx1276_tx.hpp	/^	uint32_t	max_count;$/;"	m	class:SX1276Tx	typeref:typename:uint32_t
+max_rx_payload_bytes_	src/sx1276.hpp	/^  uint8_t max_rx_payload_bytes_;$/;"	m	class:SX1276Radio	typeref:typename:uint8_t
+max_tx_payload_bytes_	src/sx1276.hpp	/^  uint8_t max_tx_payload_bytes_;$/;"	m	class:SX1276Radio	typeref:typename:uint8_t
+maxaddr	src/sx1276_tx.hpp	/^	uint16_t	maxaddr;$/;"	m	class:SX1276Tx	typeref:typename:uint16_t
+memcpy1	src/utilities.c	/^void memcpy1( uint8_t *dst, const uint8_t *src, uint16_t size )$/;"	f	typeref:typename:void
+memcpyr	src/utilities.c	/^void memcpyr( uint8_t *dst, const uint8_t *src, uint16_t size )$/;"	f	typeref:typename:void
+memset1	src/utilities.c	/^void memset1( uint8_t *dst, uint8_t value, uint16_t size )$/;"	f	typeref:typename:void
+mix_sub_columns	src/aes.c	/^  static void mix_sub_columns( uint8_t dt[N_BLOCK] )$/;"	f	typeref:typename:void	file:
+mm_data	src/aes.c	/^#define mm_data(/;"	d	file:
+mtx	src/spidev_spi.cpp	/^static std::mutex mtx;$/;"	v	typeref:typename:std::mutex	file:
+next	src/utilities.c	/^static uint32_t next = 1;$/;"	v	typeref:typename:uint32_t	file:
+plen	src/sx1276_tx.hpp	/^	uint8_t		plen;$/;"	m	class:SX1276Tx	typeref:typename:uint8_t
+preamble_	src/sx1276.hpp	/^  unsigned preamble_;$/;"	m	class:SX1276Radio	typeref:typename:unsigned
+rand1	src/utilities.c	/^int32_t rand1( void )$/;"	f	typeref:typename:int32_t
+reset_fault	src/sx1276.hpp	/^  void reset_fault() { fault_ = false; }$/;"	f	class:SX1276Radio	typeref:typename:void
+return_type	src/aes.h	/^typedef uint8_t return_type;$/;"	t	typeref:typename:uint8_t
+rijndael	src/cmac.h	/^            aes_context    rijndael;$/;"	m	struct:_AES_CMAC_CTX	typeref:typename:aes_context
+rnd	src/aes.h	/^    uint8_t rnd;$/;"	m	struct:__anonb4d0a92b0108	typeref:typename:uint8_t
+rst_gp_	src/sx1276_platform.cpp	/^  ugpio_t* rst_gp_;$/;"	m	class:Carambola2Platform	typeref:typename:ugpio_t *	file:
+rst_gpio_	src/sx1276_platform.cpp	/^  int rst_gpio_;$/;"	m	class:Carambola2Platform	typeref:typename:int	file:
+sBlock	src/LoRaMacCrypto.c	/^static uint8_t sBlock[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,$/;"	v	typeref:typename:uint8_t[]	file:
+s_box	src/aes.c	/^#define s_box(/;"	d	file:
+safe_perror	src/util.hpp	/^inline std::string safe_perror(int code, const char *prefix)$/;"	f	namespace:util	typeref:typename:std::string
+safe_str	src/sx1276_test1_rx.cpp	/^inline std::string safe_str(const char *m)$/;"	f	typeref:typename:std::string
+safe_str	src/sx1276_tx.cpp	/^inline std::string safe_str(const char *m)$/;"	f	typeref:typename:std::string
+safe_str	src/util.hpp	/^inline std::string safe_str(const char *m)$/;"	f	namespace:util	typeref:typename:std::string
+sb_data	src/aes.c	/^#define sb_data(/;"	d	file:
+sf_	src/sx1276.hpp	/^  uint8_t sf_;$/;"	m	class:SX1276Radio	typeref:typename:uint8_t
+sf_size	src/sx1276_tx.hpp	/^	uint8_t		sf_size;$/;"	m	class:SX1276Tx	typeref:typename:uint8_t
+sfs	src/sx1276_tx.hpp	/^	uint8_t		*sfs;$/;"	m	class:SX1276Tx	typeref:typename:uint8_t *
+shift_sub_rows	src/aes.c	/^static void shift_sub_rows( uint8_t st[N_BLOCK] )$/;"	f	typeref:typename:void	file:
+spi_	src/sx1276.hpp	/^  boost::shared_ptr<SPI> spi_;   \/\/\/< Reference to SPI communication instance$/;"	m	class:SX1276Radio	typeref:typename:boost::shared_ptr<SPI>
+spi_	src/sx1276_platform.cpp	/^  shared_ptr<BusPirateSPI> spi_;$/;"	m	class:BusPiratePlatform	typeref:typename:shared_ptr<BusPirateSPI>	file:
+spi_	src/sx1276_platform.cpp	/^  shared_ptr<SpidevSPI> spi_;$/;"	m	class:Carambola2Platform	typeref:typename:shared_ptr<SpidevSPI>	file:
+spidev_	src/spidev_spi.hpp	/^  std::string spidev_;$/;"	m	class:SpidevSPI	typeref:typename:std::string
+srand1	src/utilities.c	/^void srand1( uint32_t seed )$/;"	f	typeref:typename:void
+symbolTimeout_	src/sx1276.hpp	/^  unsigned symbolTimeout_;$/;"	m	class:SX1276Radio	typeref:typename:unsigned
+threadsleep	src/utilities.c	/^void threadsleep(int ms)$/;"	f	typeref:typename:void
+threadtx	src/sx1276_tx.cpp	/^void SX1276Tx::threadtx()$/;"	f	class:SX1276Tx	typeref:typename:void
+timeout	src/sx1276_tx.hpp	/^	uint16_t	timeout;$/;"	m	class:SX1276Tx	typeref:typename:uint16_t
+trace_next_suppress_	src/spi.hpp	/^  bool trace_next_suppress_;$/;"	m	class:SPI	typeref:typename:bool
+trace_reads_	src/spi.hpp	/^  bool trace_reads_;$/;"	m	class:SPI	typeref:typename:bool
+trace_writes_	src/spi.hpp	/^  bool trace_writes_;$/;"	m	class:SPI	typeref:typename:bool
+ttydev_	src/buspirate_spi.hpp	/^  std::string ttydev_;$/;"	m	class:BusPirateSPI	typeref:typename:std::string
+txpow	src/sx1276_tx.hpp	/^	uint8_t		txpow;$/;"	m	class:SX1276Tx	typeref:typename:uint8_t
+ugpio_t	src/sx1276_platform.cpp	/^typedef void ugpio_t;$/;"	t	typeref:typename:void	file:
+update_decrypt_key_128	src/aes.c	/^static void update_decrypt_key_128( uint8_t k[N_BLOCK], uint8_t *rc )$/;"	f	typeref:typename:void	file:
+update_decrypt_key_256	src/aes.c	/^static void update_decrypt_key_256( uint8_t k[2 * N_BLOCK], uint8_t *rc )$/;"	f	typeref:typename:void	file:
+update_encrypt_key_128	src/aes.c	/^static void update_encrypt_key_128( uint8_t k[N_BLOCK], uint8_t *rc )$/;"	f	typeref:typename:void	file:
+update_encrypt_key_256	src/aes.c	/^static void update_encrypt_key_256( uint8_t k[2 * N_BLOCK], uint8_t *rc )$/;"	f	typeref:typename:void	file:
+util	src/util.hpp	/^namespace util {$/;"	n
+version	src/sx1276.hpp	/^  int version() const { return version_; }$/;"	f	class:SX1276Radio	typeref:typename:int
+version_	src/sx1276.hpp	/^  uint8_t version_;              \/\/\/< Version register value read in constructor$/;"	m	class:SX1276Radio	typeref:typename:uint8_t
+xor_block	src/aes.c	/^static void xor_block( void *d, const void *s )$/;"	f	typeref:typename:void	file:
+~BusPiratePlatform	src/sx1276_platform.cpp	/^  virtual ~BusPiratePlatform() {}$/;"	f	class:BusPiratePlatform	file:
+~BusPirateSPI	src/buspirate_spi.cpp	/^BusPirateSPI::~BusPirateSPI()$/;"	f	class:BusPirateSPI
+~Carambola2Platform	src/sx1276_platform.cpp	/^  virtual ~Carambola2Platform() {$/;"	f	class:Carambola2Platform	file:
+~SX1276Platform	src/sx1276_platform.cpp	/^SX1276Platform::~SX1276Platform()$/;"	f	class:SX1276Platform
+~SX1276Radio	src/sx1276.cpp	/^SX1276Radio::~SX1276Radio()$/;"	f	class:SX1276Radio
+~SX1276Tx	src/sx1276_tx.cpp	/^SX1276Tx::~SX1276Tx(){$/;"	f	class:SX1276Tx
+~SpidevSPI	src/spidev_spi.cpp	/^SpidevSPI::~SpidevSPI()$/;"	f	class:SpidevSPI
