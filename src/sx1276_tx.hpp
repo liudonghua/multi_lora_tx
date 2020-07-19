@@ -19,6 +19,7 @@ public:
 	void 		threadtx();
 private:
 	char		device[15];
+	uint8_t		preme;
 	uint32_t	*freqs;
 	uint8_t		freq_size;
 	uint8_t		*sfs;
@@ -26,7 +27,8 @@ private:
 	uint8_t		txpow;
 	uint16_t	timeout;
 	uint8_t		plen;
-	uint16_t	maxaddr;
+	uint16_t	addrcount;
+	uint16_t	startaddr;
 	uint32_t	max_count;
 	
 	

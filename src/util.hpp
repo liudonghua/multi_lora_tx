@@ -52,8 +52,8 @@ inline std::string safe_str(const char *m)
 inline std::string safe_perror(int code, const char *prefix)
 {
   char buf[96] = "";
-  char *err = strerror_r(code, buf, sizeof(buf));
-  return (prefix ? (std::string(prefix) + ": ") : std::string()) + std::string(err);
+  int err = strerror_r(code, buf, sizeof(buf));
+  return (prefix ? (std::string(prefix) + ": ") : std::string()) + std::to_string(err);
 }
 
 };

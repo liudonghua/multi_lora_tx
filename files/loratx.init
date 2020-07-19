@@ -5,31 +5,109 @@ START=99
 #USE_PROCD=1
 NAME=loratx
 PROG=/usr/sbin/loratx
+DIR=/tmp/loratx
+
+. /usr/share/libubox/jshn.sh
+
+
 
 init_reset_gpio(){
-	[ -d /sys/class/gpio/gpio17 ] || {
-	echo "17" > /sys/class/gpio/export
+	GPIO=gpio23
+	[ -d /sys/class/gpio/$GPIO ] || {
+	echo "23" > /sys/class/gpio/export
 	}
-	echo "out" > /sys/class/gpio/gpio17/direction
+	echo "out" > /sys/class/gpio/$GPIO/direction
 
 	sleep 1
-	echo "0" > /sys/class/gpio/gpio17/value
+	echo "0" > /sys/class/gpio/$GPIO/value
 
 	usleep 5000
 
-	echo "1" > /sys/class/gpio/gpio17/value
+	echo "1" > /sys/class/gpio/$GPIO/value
 
 	sleep 1
 }
 
+handle_freq(){
+	json_add_int "" $1
+}
+
+handle_sf(){
+	json_add_int "" $1
+}
+
+handle_spi(){
+	local bus device sf freq
+	local sec=$1
+	local num=$2
+
+	config_get bus $sec bus
+
+	[ "$bus" = "$2" ] &&{
+		json_add_object
+		config_get device $sec device
+		json_add_string "device" $device
+		json_add_int "preme" $preme
+		json_add_int "timeout" $timeout
+		json_add_int "plen" $plen
+		json_add_int "startaddr" $startaddr
+		json_add_int "addrcount" $addrcount
+		json_add_int "tx_pow" $txpow
+		json_add_int "max_count" $max_count
+		json_add_array "freqs"
+		config_list_foreach $sec freq handle_freq
+		json_close_array
+		json_add_array "sfs"
+		config_list_foreach $sec sf handle_sf
+		json_close_array
+		json_close_object
+	}
+}
+
+gen_config() {
+	startaddr=0
+	config_load loratx
+	config_get preme msg preme 64
+	config_get timeout msg timeout 1
+	config_get addcount msg addcount 8000
+	config_get plen msg plen 5
+	config_get txpow msg txpow 10
+	config_get max_count msg max_count 0
+
+	json_init
+	config_foreach handle_spi spi 1
+	json_dump > $DIR/1.json	
+
+	json_init
+	config_foreach handle_spi spi 2
+	json_dump > $DIR/1.json	
+
+	json_init
+	config_foreach handle_spi spi 3
+	json_dump > $DIR/1.json	
+}
+
+start_lora() {
+	$PROG $DIR/$1 &
+}
+
 start() {
+	local dir
+
+	mkdir -p $DIR
+	
+	gen_config
 
 	init_reset_gpio
 
-	$PROG /etc/conf.json
+	for dir in $(ls /etc/loratx)
+	do
+		start_lora $dir
+	done
+	
+
 }
 
-stop() {
-	killall $PROG
+stop(){
+	killall loratx
 }
-

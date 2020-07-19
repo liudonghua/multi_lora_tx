@@ -393,20 +393,20 @@ bool SX1276Radio::ApplyDefaultLoraConfiguration(uint8_t sf,uint8_t txpow)
 
 /// Calcluates the estimated time on air for a given simple payload
 /// based on the formulae in the SX1276 datasheet
-float SX1276Radio::PredictTimeOnAir(const char *payload) const
+int SX1276Radio::PredictTimeOnAir(const char *payload) const
 {
   unsigned BW = 125000;
   
   float toa = (6.F+4.25F+8+ceil( (8*(strlen(payload)+1)-4*sf_+28+16)/(4*sf_))*6.F) * (1 << sf_) / BW;
-  return toa;
+  return toa*1000000;
 }
 
-float SX1276Radio::PredictTimeOnAir(const void *payload, unsigned len) const
+int SX1276Radio::PredictTimeOnAir(const void *payload, unsigned len) const
 {
   unsigned BW = 125000;
   
   float toa = (6.F+4.25F+8+ceil( (8*(len+1)-4*sf_+28+16)/(4*sf_))*6.F) * (1 << sf_) / BW;
-  return toa;
+  return toa*1000000;
 }
 
 

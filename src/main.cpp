@@ -9,7 +9,7 @@
 int main(int argc,char **argv)
 {
 	int i = 0;
-//	std::vector<SX1276Tx> txs;
+
 	std::ifstream in(argv[1]);
 	Json::Value txConfs;
 	

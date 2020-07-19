@@ -60,10 +60,11 @@ SX1276Tx::SX1276Tx(Json::Value conf)
 		printf("NO FREQUENCY\n");
 		exit(-1);
 	}
-
+	preme 		= conf["preme"].asInt();
 	max_count	= conf["max_count"].asInt();
-	maxaddr		= conf["maxaddr"].asInt();
-	plen			= conf["plen"].asInt();
+	startaddr	= conf["startaddr"].asInt();
+	addrcount	= conf["addrcount"].asInt();
+	plen		= conf["plen"].asInt();
 	txpow		= conf["txpow"].asInt();
 	timeout		= conf["timeout"].asInt();
 
@@ -129,26 +130,27 @@ void SX1276Tx::threadtx()
 	// cout << format("Check read Carrier Frequency: %uHz\n") % radio.carrier();
 
 	// if (radio.fault()) return;
+	// srand((uint16_t)time(NULL));
 
+	// uint32_t devaddr = rand()%maxaddr;
+	uint32_t devaddr = startaddr;
 
-
-	uint16_t total = 1;
-	uint32_t devaddr = 0 ;
+	uint16_t total = 0;
+	
 	int faultCount = 0;
-	while (true) {
-		devaddr++;
-		if (devaddr > maxaddr){
-			total++;
-			devaddr = 0;
 
-		}
+	while (!max_count || total < max_count) {
+
+		devaddr++;
+		
+		
 		char msg[240]="";
 
 		time_t rawt;
+		
 		struct tm *ti;
-		unsigned char enbuffer[255];
 
-		uint8_t preme = PREME;
+		unsigned char enbuffer[255];
 
 		uint8_t fcntl = FCNTL;
 
@@ -168,6 +170,7 @@ void SX1276Tx::threadtx()
 		memcpy((uint8_t *)(enbuffer+5),(uint8_t *)&fcntl,1);
 
 		//uint16_t count = (cycle_count<<8 & 0xff00)|(cycle_count>>8 & 0x00ff);
+
 		memcpy((uint16_t *)(enbuffer+6),(uint16_t *)&total,2);
 
 		memcpy((uint8_t *)(enbuffer+8),(uint8_t *)&fport,1);
@@ -198,7 +201,7 @@ void SX1276Tx::threadtx()
 			sf = sfs[0];
 		
 		DBG("spread factor origin:%d \n",sf);
-		threadsleep(inter_msg_delay_us);
+		
 		if(fixed == false){
 			radio.ChangeCarrier(freq_hz);
 			radio.ApplyDefaultLoraConfiguration(sf,txpow);
@@ -213,11 +216,17 @@ void SX1276Tx::threadtx()
 		faut = radio.fault();
 		
 		xd = radio.SendSimpleMessage(enbuffer,plen+13);
-		
+
 		if (!faut && xd) { 
 		 	fflush(stdout); 
 			radio.Standby(); 
 			DBG("send success\n");
+
+			if (devaddr > (startaddr+addrcount)){
+				total++;
+				devaddr = startaddr;
+			}	
+			threadsleep(inter_msg_delay_us+radio.PredictTimeOnAir(msg)*99);		
 			continue;
 		}
 		radio.Standby();
@@ -226,7 +235,7 @@ void SX1276Tx::threadtx()
 		PR_ERROR("Fault on send detected: %d of %d\n", faultCount, total);
 		DBG("Beacon message: '%s'\n", safe_str(msg).c_str());
 		DBG("Predicted time on air: %fs\n", radio.PredictTimeOnAir(msg));
-		
+		threadsleep(5000);
 		radio.reset_fault();
 		platform->ResetSX1276();
 		

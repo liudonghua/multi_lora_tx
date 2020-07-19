@@ -33,10 +33,10 @@ define Package/loratx/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/loratx $(1)/usr/sbin/loratx
 	$(INSTALL_BIN) ./files/loratx.sh $(1)/usr/sbin/loratx.sh
-	$(INSTALL_DIR) $(1)/etc
-	$(INSTALL_DATA) ./files/conf.json $(1)/etc/conf.json
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/loratx.init $(1)/etc/init.d/loratx
+	$(INSTALL_DIR) $(1)/etc/config
+	$(INSTALL_BIN) ./files/loratx.config $(1)/etc/config/loratx
 endef
 
 $(eval $(call BuildPackage,loratx))
