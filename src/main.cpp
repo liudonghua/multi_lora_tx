@@ -11,13 +11,15 @@ int main(int argc,char **argv)
 	int i = 0;
 
 	std::ifstream in(argv[1]);
-	Json::Value txConfs;
+	Json::Value txConf;
 	
-	in >> txConfs;
-	if(txConfs.isArray()){
-		for(i=0;i<txConfs.size();i++){
+	in >> txConf;
+
+	Json::Value confs = txConf["conf"];
+	if(confs && confs.isArray()){
+		for(i=0;i<confs.size();i++){
 			
-			std::thread t(&SX1276Tx::threadtx,SX1276Tx(txConfs[i]));
+			std::thread t(&SX1276Tx::threadtx,SX1276Tx(confs[i]));
 			t.detach();
 			sleep(5);
 		}

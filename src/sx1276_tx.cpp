@@ -226,7 +226,7 @@ void SX1276Tx::threadtx()
 				total++;
 				devaddr = startaddr;
 			}	
-			threadsleep(inter_msg_delay_us+radio.PredictTimeOnAir(msg)*99);		
+			threadsleep(inter_msg_delay_us+radio.PredictTimeOnAir(msg)*9);		
 			continue;
 		}
 		radio.Standby();
